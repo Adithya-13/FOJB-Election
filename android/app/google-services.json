@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "307938886581",
+    "project_id": "fojb-election",
+    "storage_bucket": "fojb-election.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307938886581:android:0efae6b0e13217fcfa4ffc",
+        "android_client_info": {
+          "package_name": "com.fojb.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307938886581-v5tg0l457q6m8obdbbp1i13gh58nraa9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArW4bWJ83sj9s_H4SIEljK26Q0sXhn9xg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307938886581-v5tg0l457q6m8obdbbp1i13gh58nraa9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
