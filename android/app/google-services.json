@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "307938886581",
-    "project_id": "fojb-election",
-    "storage_bucket": "fojb-election.appspot.com"
+    "project_number": "1048060533121",
+    "project_id": "fojb-election-af8d3",
+    "storage_bucket": "fojb-election-af8d3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:307938886581:android:0efae6b0e13217fcfa4ffc",
+        "mobilesdk_app_id": "1:1048060533121:android:f0a3a82ba650a5ac94b080",
         "android_client_info": {
-          "package_name": "com.fojb.project"
+          "package_name": "com.fojb.project.fojb_election"
         }
       },
       "oauth_client": [
         {
-          "client_id": "307938886581-v5tg0l457q6m8obdbbp1i13gh58nraa9.apps.googleusercontent.com",
+          "client_id": "1048060533121-ta96vj95iq28vq1djmouvdt5rfom5o1t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyArW4bWJ83sj9s_H4SIEljK26Q0sXhn9xg"
+          "current_key": "AIzaSyCMT76xb9N2TeH9Y72PszxtLl8gRbFfcyU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "307938886581-v5tg0l457q6m8obdbbp1i13gh58nraa9.apps.googleusercontent.com",
+              "client_id": "1048060533121-ta96vj95iq28vq1djmouvdt5rfom5o1t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

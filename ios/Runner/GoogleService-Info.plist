@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>307938886581-58otl6i3gi0ce3l3f8c4bhirgf2grlet.apps.googleusercontent.com</string>
+	<string>1048060533121-45sncefssnpu058u7sm3qkptsadbc81n.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.307938886581-58otl6i3gi0ce3l3f8c4bhirgf2grlet</string>
+	<string>com.googleusercontent.apps.1048060533121-45sncefssnpu058u7sm3qkptsadbc81n</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDutwNNU1J8zJTG02wm6lG-YClDVp2KQio</string>
+	<string>AIzaSyC1KXAEiELS-_xm_txq1CI3WzjhG1q1VcA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>307938886581</string>
+	<string>1048060533121</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.fojb.project</string>
+	<string>com.fojb.project.fojb-election</string>
 	<key>PROJECT_ID</key>
-	<string>fojb-election</string>
+	<string>fojb-election-af8d3</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fojb-election.appspot.com</string>
+	<string>fojb-election-af8d3.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:307938886581:ios:f2b6aa283e73a096fa4ffc</string>
-	<key>DATABASE_URL</key>
-	<string>https://fojb-election-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+	<string>1:1048060533121:ios:d3d17d7d820d940894b080</string>
 </dict>
 </plist>

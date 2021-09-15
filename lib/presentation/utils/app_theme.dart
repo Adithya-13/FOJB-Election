@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
 
   static const Color blue = Color(0xFF48B9F3);
+  static const Color darkBlue = Color(0xFF147AAE);
   static const Color green = Color(0xFF4CA861);
   static const Color darkGreen = Color(0xFF42934A);
   static const Color lightGreen = Color(0xFFDBFDE3);
@@ -14,6 +15,7 @@ class AppTheme {
 
   ///font size: 36, color: black, fontWeight: bold
   static const TextStyle headline1 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.bold,
     color: black,
     fontSize: 34,
@@ -21,6 +23,7 @@ class AppTheme {
 
   ///font size: 24, color: black, fontWeight: bold
   static const TextStyle headline2 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.bold,
     color: black,
     fontSize: 24,
@@ -28,6 +31,7 @@ class AppTheme {
 
   ///font size: 20, color: black, fontWeight: bold
   static const TextStyle headline3 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.bold,
     color: black,
     fontSize: 18,
@@ -35,6 +39,7 @@ class AppTheme {
 
   ///font size: 16, color: black, fontWeight: normal
   static const TextStyle text1 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.w500,
     color: black,
     fontSize: 16,
@@ -42,6 +47,7 @@ class AppTheme {
 
   ///font size: 14, color: black, fontWeight: normal
   static const TextStyle text2 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.w500,
     color: black,
     fontSize: 14,
@@ -49,6 +55,7 @@ class AppTheme {
 
   ///font size: 12, color: black, fontWeight: normal
   static const TextStyle text3 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.w500,
     color: black,
     fontSize: 12,
@@ -56,6 +63,7 @@ class AppTheme {
 
   ///font size: 10, color: black, fontWeight: normal
   static const TextStyle subText1 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.w500,
     color: black,
     fontSize: 10,
@@ -63,6 +71,7 @@ class AppTheme {
 
   ///font size: 8, color: black, fontWeight: normal
   static const TextStyle subText2 = TextStyle(
+    fontFamily: 'Gotham',
     fontWeight: FontWeight.w500,
     color: black,
     fontSize: 8,
