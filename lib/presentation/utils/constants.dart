@@ -8,7 +8,7 @@ class Resources {
 
   static const String background = '$_baseSvg/background.svg';
   static const String loginBackground = '$_baseSvg/login_background.svg';
-  static const String splashLogo = '$_baseSvg/splash_logo.svg';
+  static const String vote = '$_baseSvg/vote.svg';
 
   static const String fojbLogo = '$_baseImg/fojb_logo.png';
 }
