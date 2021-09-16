@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
+import 'package:fojb_election/presentation/widgets/widgets.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -83,7 +85,13 @@ class DetailPage extends StatelessWidget {
                   style: AppTheme.text2,
                 ),
                 SizedBox(height: Helper.normalPadding),
-                CustomButton(onTap: () {}, text: 'Vote Farah'),
+                CustomButton(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => _announcementDialog(context),
+                  ),
+                  text: 'Vote Farah',
+                ),
               ],
             ),
           ),
@@ -130,8 +138,8 @@ class DetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: Helper.missions
                 .map((e) => Container(
-              margin: EdgeInsets.only(bottom: 4),
-                  child: Row(
+                      margin: EdgeInsets.only(bottom: 4),
+                      child: Row(
                         children: [
                           Container(
                             decoration: BoxDecoration(
@@ -147,7 +155,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                ))
+                    ))
                 .toList(),
           ),
         ],
@@ -155,14 +163,37 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _vote(BuildContext context){
+  Widget _vote(BuildContext context) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: Helper.normalPadding),
-          CustomButton(onTap: (){}, text: 'Vote Farah'),
+          CustomButton(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => _announcementDialog(context),
+            ),
+            text: 'Vote Farah',
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _announcementDialog(BuildContext context) {
+    return CustomDialog(
+      title: 'Perhatian',
+      content: Text(
+        'Pastikan apa yang kamu pilih adalah pilihanmu sendiri, tidak ada campur tangan orang lain dan sesuai dengan kata hati',
+        style: AppTheme.text3,
+      ),
+      buttons: CustomButton(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, PagePath.vote);
+        },
+        text: 'Oke, mengerti',
       ),
     );
   }
