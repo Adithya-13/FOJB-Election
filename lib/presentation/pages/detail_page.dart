@@ -30,6 +30,7 @@ class DetailPage extends StatelessWidget {
               _headerDetail(context),
               _vision(context),
               _mission(context),
+              _vote(context),
             ],
           ),
         ),
@@ -148,6 +149,19 @@ class DetailPage extends StatelessWidget {
                 ))
                 .toList(),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _vote(BuildContext context){
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: Helper.normalPadding),
+          CustomButton(onTap: (){}, text: 'Vote Farah'),
+          SizedBox(height: Helper.normalPadding),
         ],
       ),
     );
