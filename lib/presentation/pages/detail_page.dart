@@ -11,13 +11,11 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.green,
-        leading: Expanded(
-          child: Container(
-            margin: EdgeInsets.only(left: Helper.normalPadding),
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: SvgPicture.asset(Resources.back),
-            ),
+        leading: Container(
+          margin: EdgeInsets.only(left: Helper.normalPadding),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(Resources.back),
           ),
         ),
         title: Text('Detail Caketum', style: AppTheme.headline3.white),
@@ -27,8 +25,11 @@ class DetailPage extends StatelessWidget {
           padding: EdgeInsets.all(Helper.normalPadding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _headerDetail(context),
+              _vision(context),
+              _mission(context),
             ],
           ),
         ),
@@ -36,7 +37,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _headerDetail(BuildContext context){
+  Widget _headerDetail(BuildContext context) {
     return Container(
       child: Row(
         children: [
@@ -50,10 +51,7 @@ class DetailPage extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    Resources.imgDummy,
-                    fit: BoxFit.cover
-                  ),
+                  child: Image.asset(Resources.imgDummy, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -86,6 +84,69 @@ class DetailPage extends StatelessWidget {
                 CustomButton(onTap: () {}, text: 'Vote Farah'),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _vision(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Visi',
+            style: AppTheme.headline3,
+          ),
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            style: AppTheme.text2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _mission(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Misi',
+            style: AppTheme.headline3,
+          ),
+          SizedBox(height: Helper.normalPadding),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: Helper.missions
+                .map((e) => Container(
+              margin: EdgeInsets.only(bottom: 4),
+                  child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.black,
+                            ),
+                            height: 8,
+                            width: 8,
+                          ),
+                          SizedBox(width: Helper.normalPadding),
+                          Expanded(
+                            child: Text(e, style: AppTheme.text2),
+                          ),
+                        ],
+                      ),
+                ))
+                .toList(),
           ),
         ],
       ),
