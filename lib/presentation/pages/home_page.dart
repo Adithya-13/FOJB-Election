@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/presentation/routes/page_path.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
@@ -191,7 +192,10 @@ class HomePage extends StatelessWidget {
         style: AppTheme.text3,
       ),
       buttons: CustomButton(
-        onTap: () => Navigator.pop(context),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, PagePath.detail);
+        },
         text: 'Oke, mengerti',
       ),
     );
