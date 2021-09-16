@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
+import 'package:fojb_election/presentation/widgets/custom_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
             children: [
               _headerHome(context),
               _candidate(context),
+              _voteNow(context),
             ],
           ),
         ),
@@ -143,6 +145,32 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: Helper.normalPadding),
+        ],
+      ),
+    );
+  }
+
+  Widget _voteNow(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: Helper.normalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Vote Sekarang!',
+            style: AppTheme.headline3,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Setelah kamu lihat-lihat visi dan misi Calon Ketua Umum Forum Osis Jawa Barat, yuk Vote sekarang, ingat! Pilih lah sesuai kata hati, bukan kata orang!',
+            style: AppTheme.text2,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: Helper.normalPadding),
+          CustomButton(onTap: () {}, text: 'Vote'),
           SizedBox(height: Helper.normalPadding),
         ],
       ),
