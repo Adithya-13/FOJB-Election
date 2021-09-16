@@ -33,21 +33,27 @@ class _AfterVotePageState extends State<AfterVotePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  Resources.fojbLogo,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                ),
-                Text(
-                  'FOJB Election',
-                  style: AppTheme.text1.white,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    Resources.fojbLogo,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+                  Text(
+                    'FOJB Election',
+                    style: AppTheme.text1.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
-            Text('Terima kasih telah Voting!', style: AppTheme.headline2.white),
+            Expanded(
+              child: Text('Terima kasih telah Voting!',
+                  style: AppTheme.headline2.white),
+            ),
           ],
         ),
       ),
