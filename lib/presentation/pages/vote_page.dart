@@ -125,10 +125,16 @@ class _VotePageState extends State<VotePage> {
         children: [
           SizedBox(height: Helper.normalPadding),
           CustomButton(
-            onTap: () => showDialog(
-              context: context,
-              builder: (context) => _confirmationDialog(context),
-            ),
+            onTap: () {
+              if(vote == null){
+                Helper.snackBar(context, message: 'Kamu harus memilih Calon!');
+                return;
+              }
+              showDialog(
+                context: context,
+                builder: (context) => _confirmationDialog(context),
+              );
+            },
             text: 'Vote Farah',
           ),
         ],
@@ -145,6 +151,10 @@ class _VotePageState extends State<VotePage> {
       ),
       buttons: CustomButton(
         onTap: () {
+          if (vote == null) {
+            Helper.snackBar(context, message: 'Kamu harus memilih Calon!');
+            return;
+          }
           Navigator.pop(context);
           Navigator.pushNamed(context, PagePath.afterVote);
         },
