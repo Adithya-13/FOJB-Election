@@ -203,4 +203,21 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _cantVoteDialog(BuildContext context) {
+    return CustomDialog(
+      title: 'Perhatian',
+      content: Text(
+        'Kamu telah vote, kamu tidak bisa vote lagi, maaf ya!',
+        style: AppTheme.text3,
+      ),
+      buttons: CustomButton(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, PagePath.vote);
+        },
+        text: 'Oke, mengerti',
+      ),
+    );
+  }
 }
