@@ -11,6 +11,7 @@ class Resources {
   static const String vote = '$_baseSvg/vote.svg';
 
   static const String fojbLogo = '$_baseImg/fojb_logo.png';
+  static const String imgDummy = '$_baseImg/img_dummy.png';
 }
 
 class Keys {
