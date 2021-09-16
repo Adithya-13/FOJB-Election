@@ -21,6 +21,7 @@ class DetailPage extends StatelessWidget {
         title: Text('Detail Caketum', style: AppTheme.headline3.white),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Container(
           padding: EdgeInsets.all(Helper.normalPadding),
           child: Column(

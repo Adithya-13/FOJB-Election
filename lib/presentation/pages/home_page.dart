@@ -91,57 +91,60 @@ class HomePage extends StatelessWidget {
               itemCount: 6,
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.white,
-                  boxShadow: Helper.getShadow(),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.all(Helper.smallPadding),
-                margin: index == 0
-                    ? EdgeInsets.only(
-                        left: Helper.normalPadding, right: 8, bottom: 8)
-                    : index == 5
-                        ? EdgeInsets.only(
-                            left: 8, right: Helper.normalPadding, bottom: 8)
-                        : EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: AspectRatio(
-                  aspectRatio: 6.4 / 10,
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            Resources.imgDummy,
-                            fit: BoxFit.cover,
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () => Navigator.pushNamed(context, PagePath.detail),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppTheme.white,
+                    boxShadow: Helper.getShadow(),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(Helper.smallPadding),
+                  margin: index == 0
+                      ? EdgeInsets.only(
+                          left: Helper.normalPadding, right: 8, bottom: 8)
+                      : index == 5
+                          ? EdgeInsets.only(
+                              left: 8, right: Helper.normalPadding, bottom: 8)
+                          : EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: AspectRatio(
+                    aspectRatio: 6.4 / 10,
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              Resources.imgDummy,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Farah Fauziah Danopa',
-                        style: AppTheme.text1.bold,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Kab. Majalengka',
-                        style: AppTheme.subText1,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        'Lihat Visi Misi',
-                        style: AppTheme.subText1.blue,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        SizedBox(height: 8),
+                        Text(
+                          'Farah Fauziah Danopa',
+                          style: AppTheme.text1.bold,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Kab. Majalengka',
+                          style: AppTheme.subText1,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Lihat Visi Misi',
+                          style: AppTheme.subText1.blue,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -194,7 +197,7 @@ class HomePage extends StatelessWidget {
       buttons: CustomButton(
         onTap: () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, PagePath.detail);
+          Navigator.pushNamed(context, PagePath.vote);
         },
         text: 'Oke, mengerti',
       ),
