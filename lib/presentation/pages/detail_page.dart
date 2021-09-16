@@ -162,7 +162,6 @@ class DetailPage extends StatelessWidget {
         children: [
           SizedBox(height: Helper.normalPadding),
           CustomButton(onTap: (){}, text: 'Vote Farah'),
-          SizedBox(height: Helper.normalPadding),
         ],
       ),
     );
