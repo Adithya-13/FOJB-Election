@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
+import 'package:fojb_election/presentation/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -170,9 +171,28 @@ class HomePage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: Helper.normalPadding),
-          CustomButton(onTap: () {}, text: 'Vote'),
+          CustomButton(
+              onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => _announcementDialog(context),
+                  ),
+              text: 'Vote'),
           SizedBox(height: Helper.normalPadding),
         ],
+      ),
+    );
+  }
+
+  Widget _announcementDialog(BuildContext context) {
+    return CustomDialog(
+      title: 'Perhatian',
+      content: Text(
+        'Pastikan apa yang kamu pilih adalah pilihanmu sendiri, tidak ada campur tangan orang lain dan sesuai dengan kata hati',
+        style: AppTheme.text3,
+      ),
+      buttons: CustomButton(
+        onTap: () => Navigator.pop(context),
+        text: 'Oke, mengerti',
       ),
     );
   }
