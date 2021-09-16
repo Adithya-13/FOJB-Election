@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 
@@ -11,7 +12,6 @@ class VotePage extends StatefulWidget {
 }
 
 class _VotePageState extends State<VotePage> {
-
   int? vote;
 
   @override
@@ -45,7 +45,7 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _gridListCandidate(BuildContext context){
+  Widget _gridListCandidate(BuildContext context) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -118,14 +118,37 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _vote(BuildContext context){
+  Widget _vote(BuildContext context) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: Helper.normalPadding),
-          CustomButton(onTap: (){}, text: 'Vote Farah'),
+          CustomButton(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => _confirmationDialog(context),
+            ),
+            text: 'Vote Farah',
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _confirmationDialog(BuildContext context) {
+    return CustomDialog(
+      title: 'Konfirmasi',
+      content: Text(
+        'Anda yakin memilih Farah Fauziah Danopa dari Kab. Majalengka?',
+        style: AppTheme.text3,
+      ),
+      buttons: CustomButton(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, PagePath.afterVote);
+        },
+        text: 'Yap, saya yakin',
       ),
     );
   }
