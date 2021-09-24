@@ -1,4 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fojb_election/data/exceptions/api_exception.dart';
+import 'package:fojb_election/data/providers/remotes/remotes.dart';
+import 'package:fojb_election/logic/blocs/auth/auth_bloc.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
@@ -7,11 +13,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logging/logging.dart';
 
+import 'data/repositories/repositories.dart';
 
 void main() async {
   await GetStorage.init();
   Bloc.observer = SimpleBlocObserver();
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  final DatabaseReference _ref =
+      FirebaseDatabase.instance.reference();
+
+  runApp(
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => UserRepository(
+            userDataSource:
+                UserDataSource(ref: _ref),
+          ),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+              userRepository: context.read<UserRepository>(),
+            ),
+          ),
+        ],
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,6 +60,7 @@ class MyApp extends StatelessWidget {
       title: 'FOJB Election',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        fontFamily: !Platform.isIOS ? 'Gotham' : null,
         scaffoldBackgroundColor: AppTheme.scaffold,
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: AppTheme.enabledBorder,
