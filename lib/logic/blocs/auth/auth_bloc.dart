@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
+import 'package:fojb_election/presentation/utils/utils.dart';
+import 'package:get_storage/get_storage.dart';
 
 part 'auth_event.dart';
 
@@ -11,10 +13,13 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository _userRepository;
+  final GetStorage _getStorage;
 
   AuthBloc({
     required UserRepository userRepository,
+    required GetStorage getStorage,
   })  : _userRepository = userRepository,
+        _getStorage = getStorage,
         super(AuthInitial());
 
   @override
@@ -32,6 +37,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final entity =
           await _userRepository.getUserByPhone(phoneNumber: event.phoneNumber);
       if(entity.id != '' && entity.password == event.password){
+        await _getStorage.write(Keys.name, entity.name);
+        await _getStorage.write(Keys.id, entity.id);
+        await _getStorage.write(Keys.isLoggedIn, true);
         yield AuthSuccess(userEntity: entity);
       } else {
         yield AuthFailure(message: 'No Telp atau Password salah');

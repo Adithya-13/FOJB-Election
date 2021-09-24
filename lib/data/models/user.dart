@@ -33,26 +33,26 @@ class User {
   User({
     this.id,
     this.name,
-    this.password,
-    this.phoneNumber,});
+    this.password,/*
+    this.phoneNumber,*/});
 
   User.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     password = json['password'];
-    phoneNumber = json['phone_number'];
+    // phoneNumber = json['phone_number'];
   }
   String? id;
   String? name;
   String? password;
-  int? phoneNumber;
+  // int? phoneNumber;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
     map['password'] = password;
-    map['phone_number'] = phoneNumber;
+    // map['phone_number'] = phoneNumber;
     return map;
   }
 

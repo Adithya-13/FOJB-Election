@@ -22,8 +22,8 @@ class _SplashPageState extends State<SplashPage> {
 
   void _navigateOtherScreen() {
     GetStorage _getStorage = GetStorage();
-    bool isInitial = _getStorage.read(Keys.isLoggedIn) ?? true;
-    if (isInitial) {
+    bool isLoggedIn = _getStorage.read(Keys.isLoggedIn) ?? false;
+    if (!isLoggedIn) {
       Future.delayed(_navigateDelay)
           .then((_) => Navigator.pushReplacementNamed(context, PagePath.login));
     } else {

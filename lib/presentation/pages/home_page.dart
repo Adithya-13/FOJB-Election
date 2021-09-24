@@ -4,9 +4,25 @@ import 'package:fojb_election/presentation/routes/page_path.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
+import 'package:get_storage/get_storage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GetStorage getStorage = GetStorage();
+  late String name;
+
+  @override
+  void initState() {
+    String fullName = getStorage.read(Keys.name);
+    name = fullName.split(' ').first;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +63,17 @@ class HomePage extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Text('Halo, Adit!', style: AppTheme.headline1.white),
+                  child: Text('Halo, $name', style: AppTheme.headline1.white),
                 ),
-                Flexible(child: SvgPicture.asset(Resources.vote)),
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await getStorage.erase();
+                      Navigator.pushNamedAndRemoveUntil(context, PagePath.login, (route) => false);
+                    },
+                    child: SvgPicture.asset(Resources.vote),
+                  ),
+                ),
               ],
             ),
           ),

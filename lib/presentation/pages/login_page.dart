@@ -90,13 +90,13 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nomor Telepon', style: AppTheme.text3.white.bold),
+            Text('ID', style: AppTheme.text3.white.bold),
             SizedBox(height: 8),
             TextField(
               controller: phoneNumberController,
               style: AppTheme.text3.white,
               decoration: InputDecoration(
-                hintText: 'Masukan nomor telepon kamu',
+                hintText: 'Masukan ID kamu',
               ),
             ),
             SizedBox(height: 16),

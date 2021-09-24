@@ -22,6 +22,7 @@ void main() async {
   await Firebase.initializeApp();
   final DatabaseReference _ref =
       FirebaseDatabase.instance.reference();
+  final GetStorage _getStorage = GetStorage();
 
   runApp(
     MultiRepositoryProvider(
@@ -37,7 +38,7 @@ void main() async {
         providers: [
           BlocProvider(
             create: (context) => AuthBloc(
-              userRepository: context.read<UserRepository>(),
+              userRepository: context.read<UserRepository>(), getStorage: _getStorage,
             ),
           ),
         ],
