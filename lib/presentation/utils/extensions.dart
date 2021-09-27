@@ -22,4 +22,22 @@ extension StringExtension on String {
   String get capitalize => "${this[0].toUpperCase()}${this.substring(1)}";
   String get allInCaps => this.toUpperCase();
   String get capitalizeFirstTofEach => this.split(" ").map((str) => str.capitalize).join(" ");
+  bool get isNumeric {
+    // Null or empty string is not a number
+    if (this == null || this.isEmpty) {
+      return false;
+    }
+
+    // Try to parse input string to number.
+    // Both integer and double work.
+    // Use int.tryParse if you want to check integer only.
+    // Use double.tryParse if you want to check double only.
+    final number = num.tryParse(this);
+
+    if (number == null) {
+      return false;
+    }
+
+    return true;
+  }
 }

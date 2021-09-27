@@ -5,7 +5,7 @@ class DataMapper {
   static UserEntity userMapper({required User user}) => UserEntity(
         password: user.password,
         name: user.name,
-        id: user.id,
+        id: user.id.toString(),
         phoneNumber: user.phoneNumber.toString(),
         type: user.type,
       );

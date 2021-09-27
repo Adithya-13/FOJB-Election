@@ -87,7 +87,12 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Text('Halo, $name', style: AppTheme.headline1.white),
+                  child: Text(
+                    'Halo, $name',
+                    style: AppTheme.headline1.white,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                  ),
                 ),
                 Flexible(
                   child: GestureDetector(

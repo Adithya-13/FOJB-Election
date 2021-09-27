@@ -2,6 +2,7 @@ import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/data/models/models.dart';
 import 'package:fojb_election/data/providers/remotes/remotes.dart';
 import 'package:fojb_election/data/utils/data_mapper.dart';
+import 'package:fojb_election/presentation/utils/utils.dart';
 
 class FojbRepository {
   final UserDataSource _userDataSource;
@@ -14,7 +15,8 @@ class FojbRepository {
         _voteDataSource = voteDataSource;
 
   Future<UserEntity> getUserByPhone({required String id}) async {
-    final User user = await _userDataSource.getUserByPhone(id: id);
+    dynamic idUser = id.isNumeric ? int.tryParse(id) : id;
+    final User user = await _userDataSource.getUserByPhone(id: idUser);
 
     return DataMapper.userMapper(user: user);
   }

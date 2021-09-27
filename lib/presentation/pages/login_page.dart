@@ -5,6 +5,7 @@ import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,33 +21,46 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Helper.unfocus(),
-      child: Scaffold(
-        body: Background(
-          isLogin: true,
-          child: SafeArea(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.all(Helper.normalPadding),
-                height: MediaQuery.of(context).size.height -
-                    (MediaQuery.of(context).padding.top +
-                        MediaQuery.of(context).padding.bottom) -
-                    40,
-                child: BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthLoading) {
-                      Helper.snackBar(context, message: 'Sedang Masuk...');
-                    } else if (state is AuthSuccess) {
-                      Helper.snackBar(context, message: 'Login berhasil!');
-                      Navigator.pushReplacementNamed(context, PagePath.base);
-                    } else if (state is AuthFailure) {
-                      Helper.snackBar(context,
-                          message: state.message, isError: true);
-                    }
-                  },
-                  child: _loginContent(context),
+    return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayColor: AppTheme.black.withOpacity(0.5),
+      overlayWidget: Center(
+        child: CircularProgressIndicator(
+          color: AppTheme.darkBlue,
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+          strokeWidth: 6,
+        ),
+      ),
+      child: GestureDetector(
+        onTap: () => Helper.unfocus(),
+        child: Scaffold(
+          body: Background(
+            isLogin: true,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: EdgeInsets.all(Helper.normalPadding),
+                  height: MediaQuery.of(context).size.height -
+                      (MediaQuery.of(context).padding.top +
+                          MediaQuery.of(context).padding.bottom) -
+                      40,
+                  child: BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthLoading) {
+                        context.loaderOverlay.show();
+                      } else if (state is AuthSuccess) {
+                        context.loaderOverlay.hide();
+                        Helper.snackBar(context, message: 'Login berhasil!');
+                        Navigator.pushReplacementNamed(context, PagePath.base);
+                      } else if (state is AuthFailure) {
+                        context.loaderOverlay.hide();
+                        Helper.snackBar(context,
+                            message: state.message, isError: true);
+                      }
+                    },
+                    child: _loginContent(context),
+                  ),
                 ),
               ),
             ),

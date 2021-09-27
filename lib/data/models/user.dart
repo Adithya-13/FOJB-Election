@@ -46,7 +46,7 @@ class User {
     phoneNumber = json['phone_number'];
     type = json['type'];
   }
-  String? id;
+  dynamic id;
   String? name;
   String? password;
   int? phoneNumber;

@@ -8,13 +8,14 @@ class UserDataSource {
     required DatabaseReference ref,
   }) : _ref = ref;
 
-  Future<User> getUserByPhone({required String id}) async {
+  Future<User> getUserByPhone({required dynamic id}) async {
     User user = await _ref
         .child('users')
         .orderByChild('id')
         .equalTo(id)
         .once()
         .then<User>((DataSnapshot dataSnapshot) {
+          print(dataSnapshot.value);
       if (dataSnapshot.value is List<Object?>) {
         print('this is list');
         print(dataSnapshot.value);
