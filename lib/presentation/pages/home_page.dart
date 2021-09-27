@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     String fullName = getStorage.read(Keys.name);
     String id = getStorage.read(Keys.id);
-    name = fullName.toLowerCase().capitalize();
+    name = fullName.toLowerCase().capitalizeFirstTofEach;
     this.fullName = name;
     this.id = id;
     super.initState();

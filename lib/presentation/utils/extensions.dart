@@ -18,10 +18,8 @@ extension StyleText on TextStyle {
 }
 
 extension StringExtension on String {
-  String firstWord() {
-    return this.split(' ').first;
-  }
-  String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1)}";
-  }
+  String get firstWord => this.split(' ').first;
+  String get capitalize => "${this[0].toUpperCase()}${this.substring(1)}";
+  String get allInCaps => this.toUpperCase();
+  String get capitalizeFirstTofEach => this.split(" ").map((str) => str.capitalize).join(" ");
 }
