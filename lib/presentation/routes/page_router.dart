@@ -14,8 +14,8 @@ class PageRouter {
         return _buildRoute(settings, SplashPage());
       case PagePath.login:
         return _buildRoute(settings, LoginPage());
-      case PagePath.home:
-        return _buildRoute(settings, HomePage());
+      case PagePath.base:
+        return _buildRoute(settings, BasePage());
       case PagePath.detail:
         return _buildRoute(settings, DetailPage());
       case PagePath.vote:

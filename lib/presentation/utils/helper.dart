@@ -31,6 +31,16 @@ class Helper {
     ];
   }
 
+  static List<BoxShadow> getNavBarShadow() {
+    return [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.2),
+        blurRadius: 8,
+        offset: Offset(0,-2),
+      ),
+    ];
+  }
+
   static void snackBar(BuildContext context, {required String message, bool isError: false}) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(

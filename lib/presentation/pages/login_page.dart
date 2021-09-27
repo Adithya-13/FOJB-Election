@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                       Helper.snackBar(context, message: 'Sedang Masuk...');
                     } else if (state is AuthSuccess) {
                       Helper.snackBar(context, message: 'Login berhasil!');
-                      Navigator.pushReplacementNamed(context, PagePath.home);
+                      Navigator.pushReplacementNamed(context, PagePath.base);
                     } else if (state is AuthFailure) {
                       Helper.snackBar(context, message: state.message, isError: true);
                     }

@@ -28,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
           .then((_) => Navigator.pushReplacementNamed(context, PagePath.login));
     } else {
       Future.delayed(_navigateDelay)
-          .then((_) => Navigator.pushReplacementNamed(context, PagePath.home));
+          .then((_) => Navigator.pushReplacementNamed(context, PagePath.base));
     }
   }
 

@@ -22,7 +22,7 @@ class _AfterVotePageState extends State<AfterVotePage> {
   void _navigateOtherScreen() {
     Future.delayed(_navigateDelay).then(
       (_) => Navigator.pushNamedAndRemoveUntil(
-          context, PagePath.home, (route) => false),
+          context, PagePath.base, (route) => false),
     );
   }
 
