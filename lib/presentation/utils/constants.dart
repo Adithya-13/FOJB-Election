@@ -10,6 +10,7 @@ class Resources {
   static const String loginBackground = '$_baseSvg/login_background.svg';
   static const String vote = '$_baseSvg/vote.svg';
   static const String back = '$_baseSvg/back.svg';
+  static const String next = '$_baseSvg/next.svg';
 
   static const String fojbLogo = '$_baseImg/fojb_logo.png';
   static const String imgDummy = '$_baseImg/img_dummy.png';

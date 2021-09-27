@@ -18,23 +18,21 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> {
       : _fojbRepository = fojbRepository,
         _getStorage = getStorage,
         super(VoteInitial()) {
-    final String id = _getStorage.read(Keys.id);
-    final String name = _getStorage.read(Keys.name);
     on<CheckCanVote>((event, emit) async {
       emit(VoteLoading());
-      final bool isUserCanVote = await _fojbRepository.checkUserVote(id: id);
+      final bool isUserCanVote = await _fojbRepository.checkUserVote(id: event.id);
       print('isUserCanVote $isUserCanVote');
       emit(VoteCheck(isUserCanVote: isUserCanVote));
     });
     on<PostVote>((event, emit) async {
       emit(VoteLoading());
       try {
-        final bool isUserCanVote = await _fojbRepository.checkUserVote(id: id);
+        final bool isUserCanVote = await _fojbRepository.checkUserVote(id: event.id);
         if (isUserCanVote) {
-          _fojbRepository.doVote(
+          await _fojbRepository.doVote(
             position: event.position,
-            name: name,
-            id: id,
+            name: event.name,
+            id: event.id,
           );
           emit(VoteSuccess());
         } else {

@@ -9,11 +9,19 @@ abstract class VoteEvent extends Equatable {
 
 class PostVote extends VoteEvent {
   final int position;
+  final String name;
+  final String id;
 
-  PostVote({required this.position});
+  PostVote({required this.position, required this.name, required this.id});
 
   @override
-  List<Object?> get props => [position];
+  List<Object?> get props => [position, name, id];
 }
 
-class CheckCanVote extends VoteEvent {}
+class CheckCanVote extends VoteEvent {
+  final String id;
+  CheckCanVote({required this.id});
+
+  @override
+  List<Object?> get props => [id];
+}

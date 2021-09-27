@@ -6,10 +6,25 @@ import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
+import 'package:get_storage/get_storage.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({Key? key}) : super(key: key);
 
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  final GetStorage getStorage = GetStorage();
+  late String id;
+
+  @override
+  void initState() {
+    String id = getStorage.read(Keys.id);
+    this.id = id;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,12 +223,11 @@ class DetailPage extends StatelessWidget {
       ),
       buttons: CustomButton(
         onTap: () {
-          context.read<VoteBloc>().add(CheckCanVote());
+          context.read<VoteBloc>().add(CheckCanVote(id: id));
           Navigator.pop(context);
         },
         text: 'Oke, mengerti',
       ),
     );
   }
-
 }

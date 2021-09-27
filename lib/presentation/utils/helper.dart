@@ -31,6 +31,16 @@ class Helper {
     ];
   }
 
+  static List<BoxShadow> getBigShadow() {
+    return [
+      BoxShadow(
+        color: AppTheme.darkGreen.withOpacity(0.8),
+        blurRadius: 12,
+        offset: Offset(0, 4),
+      ),
+    ];
+  }
+
   static List<BoxShadow> getNavBarShadow() {
     return [
       BoxShadow(

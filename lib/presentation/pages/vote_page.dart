@@ -5,6 +5,7 @@ import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
+import 'package:get_storage/get_storage.dart';
 
 class VotePage extends StatefulWidget {
   const VotePage({Key? key}) : super(key: key);
@@ -15,6 +16,18 @@ class VotePage extends StatefulWidget {
 
 class _VotePageState extends State<VotePage> {
   int? vote;
+  final GetStorage getStorage = GetStorage();
+  late String name;
+  late String id;
+
+  @override
+  void initState() {
+    String name = getStorage.read(Keys.name);
+    String id = getStorage.read(Keys.id);
+    this.name = name;
+    this.id = id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +57,7 @@ class _VotePageState extends State<VotePage> {
               Helper.snackBar(
                 context,
                 message:
-                'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
                 isError: true,
               );
             }
@@ -179,25 +192,15 @@ class _VotePageState extends State<VotePage> {
             return;
           }
           Navigator.pop(context);
-          context.read<VoteBloc>().add(PostVote(position: vote! + 1));
+          context.read<VoteBloc>().add(
+                PostVote(
+                  position: vote! + 1,
+                  id: id,
+                  name: name,
+                ),
+              );
         },
         text: 'Yap, saya yakin',
-      ),
-    );
-  }
-
-  Widget _cantVoteDialog(BuildContext context) {
-    return CustomDialog(
-      title: 'Perhatian',
-      content: Text(
-        'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-        style: AppTheme.text3,
-      ),
-      buttons: CustomButton(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        text: 'Oke, mengerti',
       ),
     );
   }

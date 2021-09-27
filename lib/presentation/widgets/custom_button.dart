@@ -25,7 +25,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           color: isOutline ? Colors.transparent: isEnable ? AppTheme.blue : AppTheme.darkBlue,
           border: isOutline ? Border.all(color: AppTheme.black, width: 1) : null,
-          boxShadow: Helper.getShadow(),
+          boxShadow: isOutline ? null: Helper.getShadow(),
         ),
         padding: EdgeInsets.symmetric(
           horizontal: 24,
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: AppTheme.text2.bold.white,
+            style: isOutline ? AppTheme.text2.bold : AppTheme.text2.bold.white,
           ),
         ),
       ),
