@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isObscure = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -103,51 +104,72 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginTextField(BuildContext context) {
     return Expanded(
       child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('ID', style: AppTheme.text3.white.bold),
-            SizedBox(height: 8),
-            TextField(
-              controller: idController,
-              style: AppTheme.text3.white,
-              decoration: InputDecoration(
-                hintText: 'Masukan ID kamu',
-              ),
-            ),
-            SizedBox(height: 16),
-            Text('Password', style: AppTheme.text3.white.bold),
-            SizedBox(height: 8),
-            TextField(
-              controller: passwordController,
-              style: AppTheme.text3.white,
-              obscureText: isObscure,
-              decoration: InputDecoration(
-                hintText: 'Masukan password kamu',
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isObscure = !isObscure;
-                    });
-                  },
-                  child: Icon(
-                      isObscure ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
-                      color: AppTheme.white),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('ID', style: AppTheme.text3.white.bold),
+              SizedBox(height: 8),
+              TextFormField(
+                controller: idController,
+                style: AppTheme.text3.white,
+                decoration: InputDecoration(
+                  hintText: 'Masukan ID kamu',
+                  errorStyle: AppTheme.text3.red,
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Harap masukan input!';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 24),
-            CustomButton(
-              onTap: () {
-                context.read<AuthBloc>().add(Login(
-                      id: idController.text,
-                      password: passwordController.text,
-                    ));
-              },
-              text: 'Masuk',
-            ),
-          ],
+              SizedBox(height: 16),
+              Text('Password', style: AppTheme.text3.white.bold),
+              SizedBox(height: 8),
+              TextFormField(
+                controller: passwordController,
+                style: AppTheme.text3.white,
+                obscureText: isObscure,
+                decoration: InputDecoration(
+                  hintText: 'Masukan password kamu',
+                  errorStyle: AppTheme.text3.red,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isObscure = !isObscure;
+                      });
+                    },
+                    child: Icon(
+                        isObscure
+                            ? CupertinoIcons.eye
+                            : CupertinoIcons.eye_slash,
+                        color: AppTheme.white),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Harap masukan input!';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 24),
+              CustomButton(
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    context.read<AuthBloc>().add(Login(
+                          id: idController.text,
+                          password: passwordController.text,
+                        ));
+                  }
+                },
+                text: 'Masuk',
+              ),
+            ],
+          ),
         ),
       ),
     );
