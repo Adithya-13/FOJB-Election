@@ -4,20 +4,20 @@ class ListUser {
   ListUser({
     this.users,});
 
-  ListUser.fromJson(dynamic json) {
-    if (json['users'] != null) {
+  ListUser.fromJson(dynamic json, {String keys: 'users'}) {
+    if (json[keys] != null) {
       users = [];
-      json['users'].forEach((v) {
+      json[keys].forEach((v) {
         users?.add(User.fromJson(v));
       });
     }
   }
   List<User>? users;
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({String keys: 'users'}) {
     final map = <String, dynamic>{};
     if (users != null) {
-      map['users'] = users?.map((v) => v.toJson()).toList();
+      map[keys] = users?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -34,25 +34,25 @@ class User {
     this.id,
     this.name,
     this.password,/*
-    this.phoneNumber,*/});
+    this.id,*/});
 
   User.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     password = json['password'];
-    // phoneNumber = json['phone_number'];
+    // id = json['phone_number'];
   }
   String? id;
   String? name;
   String? password;
-  // int? phoneNumber;
+  // int? id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
     map['password'] = password;
-    // map['phone_number'] = phoneNumber;
+    // map['phone_number'] = id;
     return map;
   }
 

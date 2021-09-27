@@ -20,17 +20,16 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final DatabaseReference _ref =
-      FirebaseDatabase.instance.reference();
+  final DatabaseReference _ref = FirebaseDatabase.instance.reference();
   final GetStorage _getStorage = GetStorage();
 
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => UserRepository(
-            userDataSource:
-                UserDataSource(ref: _ref),
+          create: (context) => FojbRepository(
+            userDataSource: UserDataSource(ref: _ref),
+            voteDataSource: VoteDataSource(ref: _ref),
           ),
         ),
       ],
@@ -38,7 +37,14 @@ void main() async {
         providers: [
           BlocProvider(
             create: (context) => AuthBloc(
-              userRepository: context.read<UserRepository>(), getStorage: _getStorage,
+              fojbRepository: context.read<FojbRepository>(),
+              getStorage: _getStorage,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => VoteBloc(
+              fojbRepository: context.read<FojbRepository>(),
+              getStorage: _getStorage,
             ),
           ),
         ],

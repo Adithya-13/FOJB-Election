@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/page_path.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,15 +29,40 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _headerHome(context),
-              _candidate(context),
-              _voteNow(context),
-            ],
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is LogoutSuccess) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, PagePath.login, (route) => false);
+          }
+        },
+        child: BlocListener<VoteBloc, VoteState>(
+          listener: (context, state) {
+            print(state.toString());
+            if (state is VoteCheck) {
+              if (state.isUserCanVote) {
+                Navigator.pushNamed(context, PagePath.vote);
+              } else {
+                Helper.snackBar(
+                  context,
+                  message:
+                      'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                  isError: true,
+                );
+              }
+            }
+          },
+          child: SingleChildScrollView(
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _headerHome(context),
+                  _candidate(context),
+                  _voteNow(context),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -68,8 +95,7 @@ class _HomePageState extends State<HomePage> {
                 Flexible(
                   child: GestureDetector(
                     onTap: () async {
-                      await getStorage.erase();
-                      Navigator.pushNamedAndRemoveUntil(context, PagePath.login, (route) => false);
+                      context.read<AuthBloc>().add(Logout());
                     },
                     child: SvgPicture.asset(Resources.vote),
                   ),
@@ -220,8 +246,8 @@ class _HomePageState extends State<HomePage> {
       ),
       buttons: CustomButton(
         onTap: () {
+          context.read<VoteBloc>().add(CheckCanVote());
           Navigator.pop(context);
-          Navigator.pushNamed(context, PagePath.vote);
         },
         text: 'Oke, mengerti',
       ),
@@ -232,13 +258,12 @@ class _HomePageState extends State<HomePage> {
     return CustomDialog(
       title: 'Perhatian',
       content: Text(
-        'Kamu telah vote, kamu tidak bisa vote lagi, maaf ya!',
+        'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
         style: AppTheme.text3,
       ),
       buttons: CustomButton(
         onTap: () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, PagePath.vote);
         },
         text: 'Oke, mengerti',
       ),

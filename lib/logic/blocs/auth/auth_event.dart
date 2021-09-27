@@ -7,12 +7,14 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PostAuth extends AuthEvent {
-  final String phoneNumber;
+class Login extends AuthEvent {
+  final String id;
   final String password;
 
-  PostAuth({required this.phoneNumber, required this.password});
+  Login({required this.id, required this.password});
 
   @override
-  List<Object> get props => [phoneNumber, password];
+  List<Object> get props => [id, password];
 }
+
+class Logout extends AuthEvent {}

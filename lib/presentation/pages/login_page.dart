@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
                       Helper.snackBar(context, message: 'Login berhasil!');
                       Navigator.pushReplacementNamed(context, PagePath.home);
                     } else if (state is AuthFailure) {
-                      Helper.snackBar(context, message: state.message);
+                      Helper.snackBar(context, message: state.message, isError: true);
                     }
                   },
                   child: _loginContent(context),
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
             Text('ID', style: AppTheme.text3.white.bold),
             SizedBox(height: 8),
             TextField(
-              controller: phoneNumberController,
+              controller: idController,
               style: AppTheme.text3.white,
               decoration: InputDecoration(
                 hintText: 'Masukan ID kamu',
@@ -112,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 24),
             CustomButton(
               onTap: () {
-                context.read<AuthBloc>().add(PostAuth(
-                      phoneNumber: phoneNumberController.text,
+                context.read<AuthBloc>().add(Login(
+                      id: idController.text,
                       password: passwordController.text,
                     ));
               },

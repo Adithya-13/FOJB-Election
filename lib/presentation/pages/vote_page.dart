@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
@@ -26,19 +28,40 @@ class _VotePageState extends State<VotePage> {
             child: SvgPicture.asset(Resources.back),
           ),
         ),
-        title: Text('Detail Caketum', style: AppTheme.headline3.white),
+        title: Text('Vote Caketum', style: AppTheme.headline3.white),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          padding: EdgeInsets.all(Helper.normalPadding),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _gridListCandidate(context),
-              _vote(context),
-            ],
+      body: BlocListener<VoteBloc, VoteState>(
+        listener: (context, state) {
+          if (state is VoteLoading) {
+            Helper.snackBar(context, message: 'Voting...');
+          } else if (state is VoteSuccess) {
+            Helper.snackBar(context, message: 'Vote Berhasil!');
+            Navigator.pushNamed(context, PagePath.afterVote);
+          } else if (state is VoteFailure) {
+            Helper.snackBar(context, message: state.message);
+          } else if (state is VoteCheck) {
+            if (!state.isUserCanVote) {
+              Helper.snackBar(
+                context,
+                message:
+                'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                isError: true,
+              );
+            }
+          }
+        },
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.all(Helper.normalPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _gridListCandidate(context),
+                _vote(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -126,7 +149,7 @@ class _VotePageState extends State<VotePage> {
           SizedBox(height: Helper.normalPadding),
           CustomButton(
             onTap: () {
-              if(vote == null){
+              if (vote == null) {
                 Helper.snackBar(context, message: 'Kamu harus memilih Calon!');
                 return;
               }
@@ -156,9 +179,25 @@ class _VotePageState extends State<VotePage> {
             return;
           }
           Navigator.pop(context);
-          Navigator.pushNamed(context, PagePath.afterVote);
+          context.read<VoteBloc>().add(PostVote(position: vote! + 1));
         },
         text: 'Yap, saya yakin',
+      ),
+    );
+  }
+
+  Widget _cantVoteDialog(BuildContext context) {
+    return CustomDialog(
+      title: 'Perhatian',
+      content: Text(
+        'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+        style: AppTheme.text3,
+      ),
+      buttons: CustomButton(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        text: 'Oke, mengerti',
       ),
     );
   }

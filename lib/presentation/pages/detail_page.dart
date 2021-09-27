@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
@@ -22,19 +24,35 @@ class DetailPage extends StatelessWidget {
         ),
         title: Text('Detail Caketum', style: AppTheme.headline3.white),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          padding: EdgeInsets.all(Helper.normalPadding),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _headerDetail(context),
-              _vision(context),
-              _mission(context),
-              _vote(context),
-            ],
+      body: BlocListener<VoteBloc, VoteState>(
+        listener: (context, state) {
+          if (state is VoteCheck) {
+            if (state.isUserCanVote) {
+              Navigator.pushNamed(context, PagePath.vote);
+            } else {
+              Helper.snackBar(
+                context,
+                message:
+                'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                isError: true,
+              );
+            }
+          }
+        },
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.all(Helper.normalPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _headerDetail(context),
+                _vision(context),
+                _mission(context),
+                _vote(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -190,11 +208,12 @@ class DetailPage extends StatelessWidget {
       ),
       buttons: CustomButton(
         onTap: () {
+          context.read<VoteBloc>().add(CheckCanVote());
           Navigator.pop(context);
-          Navigator.pushNamed(context, PagePath.vote);
         },
         text: 'Oke, mengerti',
       ),
     );
   }
+
 }

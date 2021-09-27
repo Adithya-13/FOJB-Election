@@ -12,13 +12,13 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final UserRepository _userRepository;
+  final FojbRepository _userRepository;
   final GetStorage _getStorage;
 
   AuthBloc({
-    required UserRepository userRepository,
+    required FojbRepository fojbRepository,
     required GetStorage getStorage,
-  })  : _userRepository = userRepository,
+  })  : _userRepository = fojbRepository,
         _getStorage = getStorage,
         super(AuthInitial());
 
@@ -26,17 +26,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    if (event is PostAuth) {
-      yield* _mapPostAuthToState(event);
+    if (event is Login) {
+      yield* _mapLoginToState(event);
+    } else if (event is Logout) {
+      yield* _mapLogoutToState(event);
     }
   }
 
-  Stream<AuthState> _mapPostAuthToState(PostAuth event) async* {
+  Stream<AuthState> _mapLoginToState(Login event) async* {
     yield AuthLoading();
     try {
-      final entity =
-          await _userRepository.getUserByPhone(phoneNumber: event.phoneNumber);
-      if(entity.id != '' && entity.password == event.password){
+      final entity = await _userRepository.getUserByPhone(id: event.id);
+      if (entity.id != '' && entity.password == event.password) {
         await _getStorage.write(Keys.name, entity.name);
         await _getStorage.write(Keys.id, entity.id);
         await _getStorage.write(Keys.isLoggedIn, true);
@@ -44,6 +45,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         yield AuthFailure(message: 'No Telp atau Password salah');
       }
+    } catch (e, stacktrace) {
+      yield AuthFailure(
+        message: 'unable to post auth : $e, stacktrace: $stacktrace',
+      );
+    }
+  }
+
+  Stream<AuthState> _mapLogoutToState(Logout event) async* {
+    yield AuthLoading();
+    try {
+      await _getStorage.erase();
+      await _getStorage.remove(Keys.id);
+      await _getStorage.remove(Keys.name);
+      await _getStorage.remove(Keys.isLoggedIn);
+      yield LogoutSuccess();
     } catch (e, stacktrace) {
       yield AuthFailure(
         message: 'unable to post auth : $e, stacktrace: $stacktrace',
