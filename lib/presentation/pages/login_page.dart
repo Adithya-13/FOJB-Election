@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     listener: (context, state) {
                       if (state is AuthLoading) {
                         context.loaderOverlay.show();
+                        Helper.snackBar(context, message: 'Sedang Masuk...');
                       } else if (state is AuthSuccess) {
                         context.loaderOverlay.hide();
                         Helper.snackBar(context, message: 'Login berhasil!');

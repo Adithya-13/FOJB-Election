@@ -6,6 +6,7 @@ import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class VotePage extends StatefulWidget {
   const VotePage({Key? key}) : super(key: key);
@@ -31,49 +32,64 @@ class _VotePageState extends State<VotePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppTheme.green,
-        leading: Container(
-          margin: EdgeInsets.only(left: Helper.normalPadding),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: SvgPicture.asset(Resources.back),
-          ),
+    return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayColor: AppTheme.black.withOpacity(0.5),
+      overlayWidget: Center(
+        child: CircularProgressIndicator(
+          color: AppTheme.darkBlue,
+          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+          strokeWidth: 6,
         ),
-        title: Text('Vote Caketum', style: AppTheme.headline3.white),
       ),
-      body: BlocListener<VoteBloc, VoteState>(
-        listener: (context, state) {
-          if (state is VoteLoading) {
-            Helper.snackBar(context, message: 'Voting...');
-          } else if (state is VoteSuccess) {
-            Helper.snackBar(context, message: 'Vote Berhasil!');
-            Navigator.pushNamed(context, PagePath.afterVote);
-          } else if (state is VoteFailure) {
-            Helper.snackBar(context, message: state.message);
-          } else if (state is VoteCheck) {
-            if (!state.isUserCanVote) {
-              Helper.snackBar(
-                context,
-                message:
-                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                isError: true,
-              );
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppTheme.green,
+          leading: Container(
+            margin: EdgeInsets.only(left: Helper.normalPadding),
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: SvgPicture.asset(Resources.back),
+            ),
+          ),
+          title: Text('Vote Caketum', style: AppTheme.headline3.white),
+        ),
+        body: BlocListener<VoteBloc, VoteState>(
+          listener: (context, state) {
+            if (state is VoteLoading) {
+              context.loaderOverlay.show();
+              Helper.snackBar(context, message: 'Voting...');
+            } else if (state is VoteSuccess) {
+              context.loaderOverlay.hide();
+              Helper.snackBar(context, message: 'Vote Berhasil!');
+              Navigator.pushNamed(context, PagePath.afterVote);
+            } else if (state is VoteFailure) {
+              context.loaderOverlay.hide();
+              Helper.snackBar(context, message: state.message);
+            } else if (state is VoteCheck) {
+              context.loaderOverlay.hide();
+              if (!state.isUserCanVote) {
+                Helper.snackBar(
+                  context,
+                  message:
+                      'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                  isError: true,
+                );
+              }
             }
-          }
-        },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
-            padding: EdgeInsets.all(Helper.normalPadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _gridListCandidate(context),
-                _vote(context),
-              ],
+          },
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.all(Helper.normalPadding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _gridListCandidate(context),
+                  _vote(context),
+                ],
+              ),
             ),
           ),
         ),
