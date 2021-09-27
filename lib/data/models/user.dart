@@ -28,31 +28,37 @@ class ListUser {
 /// name : "M. Hanief Fuady"
 /// password : "dsgZy47N"
 /// phone_number : 62818224865
+/// type : PENGURUS FOJB
 
 class User {
   User({
     this.id,
     this.name,
-    this.password,/*
-    this.id,*/});
+    this.password,
+    this.phoneNumber,
+    this.type,
+  });
 
   User.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     password = json['password'];
-    // id = json['phone_number'];
+    phoneNumber = json['phone_number'];
+    type = json['type'];
   }
   String? id;
   String? name;
   String? password;
-  // int? id;
+  int? phoneNumber;
+  String? type;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
     map['password'] = password;
-    // map['phone_number'] = id;
+    map['phone_number'] = password;
+    map['type'] = password;
     return map;
   }
 

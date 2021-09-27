@@ -19,6 +19,8 @@ class Resources {
 class Keys {
   static const String isLoggedIn = 'isLoggedIn';
   static const String name = 'name';
+  static const String phoneNumber = 'phoneNumber';
+  static const String type = 'type';
   static const String id = 'id';
 }
 

@@ -40,10 +40,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (entity.id != '' && entity.password == event.password) {
         await _getStorage.write(Keys.name, entity.name);
         await _getStorage.write(Keys.id, entity.id);
+        await _getStorage.write(Keys.phoneNumber, entity.phoneNumber);
+        await _getStorage.write(Keys.type, entity.type);
         await _getStorage.write(Keys.isLoggedIn, true);
-        print(_getStorage.read(Keys.id));
-        print(_getStorage.read(Keys.name));
-        print(_getStorage.read(Keys.isLoggedIn));
         yield AuthSuccess(userEntity: entity);
       } else {
         yield AuthFailure(message: 'No Telp atau Password salah');
@@ -61,10 +60,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _getStorage.erase();
       await _getStorage.remove(Keys.id);
       await _getStorage.remove(Keys.name);
+      await _getStorage.remove(Keys.phoneNumber);
+      await _getStorage.remove(Keys.type);
       await _getStorage.remove(Keys.isLoggedIn);
-      print(_getStorage.read(Keys.id));
-      print(_getStorage.read(Keys.name));
-      print(_getStorage.read(Keys.isLoggedIn));
       yield LogoutSuccess();
     } catch (e, stacktrace) {
       yield AuthFailure(

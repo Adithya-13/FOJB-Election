@@ -6,5 +6,7 @@ class DataMapper {
         password: user.password,
         name: user.name,
         id: user.id,
+        phoneNumber: user.phoneNumber.toString(),
+        type: user.type,
       );
 }

@@ -9,20 +9,30 @@ class UserDataSource {
   }) : _ref = ref;
 
   Future<User> getUserByPhone({required String id}) async {
-    User user = await _ref.child('users').orderByChild('id').equalTo(id).once().then<User>((DataSnapshot dataSnapshot) {
-      print(dataSnapshot.value);
-          if(dataSnapshot.exists){
-            Map<dynamic, dynamic> values = dataSnapshot.value;
-            User? user;
-            values.forEach((key,values) {
-              print(values['id']);
-              print(values['name']);
-              print(values['password']);
-              user = User.fromJson(values);
-            });
-            return user ?? User();
-          }
-          return User();
+    User user = await _ref
+        .child('users')
+        .orderByChild('id')
+        .equalTo(id)
+        .once()
+        .then<User>((DataSnapshot dataSnapshot) {
+      if (dataSnapshot.value is List<Object?>) {
+        print('this is list');
+        print(dataSnapshot.value);
+        if (dataSnapshot.exists) {
+          return User.fromJson(dataSnapshot.value[0]);
+        }
+        return User();
+      } else {
+        if (dataSnapshot.exists) {
+          Map<dynamic, dynamic> values = dataSnapshot.value;
+          User? user;
+          values.forEach((key, values) {
+            user = User.fromJson(values);
+          });
+          return user ?? User();
+        }
+      }
+      return User();
     });
     print(user.password);
     return user;

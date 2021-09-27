@@ -5,9 +5,34 @@ import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final GetStorage getStorage = GetStorage();
+  late String name;
+  late String id;
+  late String phoneNumber;
+  late String type;
+
+  @override
+  void initState() {
+    String name = getStorage.read(Keys.name);
+    String id = getStorage.read(Keys.id);
+    String phoneNumber = getStorage.read(Keys.phoneNumber);
+    String type = getStorage.read(Keys.type);
+    this.id = id;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.type = type;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +99,11 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         SizedBox(height: Helper.normalPadding),
-        Text('Adithya Firmansyah Putra', style: AppTheme.headline3),
+        Text(name, style: AppTheme.headline3),
         SizedBox(height: 8),
-        Text('SMK Negeri 1 Majalengka', style: AppTheme.text3),
+        Text(type, style: AppTheme.text3),
         SizedBox(height: 8),
-        Text('19042138210', style: AppTheme.text3.green),
+        Text(id, style: AppTheme.text3.green),
       ],
     );
   }

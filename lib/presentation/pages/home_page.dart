@@ -25,10 +25,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     String fullName = getStorage.read(Keys.name);
     String id = getStorage.read(Keys.id);
-    print(fullName);
-    print(id);
-    name = fullName.split(' ').first;
-    this.fullName = fullName;
+    name = fullName.toLowerCase().capitalize();
+    this.fullName = name;
     this.id = id;
     super.initState();
   }
@@ -102,7 +100,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).padding.top),
           Expanded(
             flex: 5,
             child: Center(

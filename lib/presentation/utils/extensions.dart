@@ -16,3 +16,12 @@ extension StyleText on TextStyle {
   TextStyle get white => this.copyWith(color: AppTheme.white);
   TextStyle get whiteOpacity => this.copyWith(color: AppTheme.whiteOpacity);
 }
+
+extension StringExtension on String {
+  String firstWord() {
+    return this.split(' ').first;
+  }
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+}
