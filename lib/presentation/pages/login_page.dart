@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController idController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
                       Helper.snackBar(context, message: 'Login berhasil!');
                       Navigator.pushReplacementNamed(context, PagePath.base);
                     } else if (state is AuthFailure) {
-                      Helper.snackBar(context, message: state.message, isError: true);
+                      Helper.snackBar(context,
+                          message: state.message, isError: true);
                     }
                   },
                   child: _loginContent(context),
@@ -105,8 +108,19 @@ class _LoginPageState extends State<LoginPage> {
             TextField(
               controller: passwordController,
               style: AppTheme.text3.white,
+              obscureText: isObscure,
               decoration: InputDecoration(
                 hintText: 'Masukan password kamu',
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isObscure = !isObscure;
+                    });
+                  },
+                  child: Icon(
+                      isObscure ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+                      color: AppTheme.white),
+                ),
               ),
             ),
             SizedBox(height: 24),
