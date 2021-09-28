@@ -17,6 +17,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
           CandidateItemEntity(
             name: 'Razinah Saleh Washingthon Azward',
@@ -32,6 +33,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
           CandidateItemEntity(
             name: 'Muhammad Azzikri Fadillah Anwar',
@@ -47,6 +49,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
           CandidateItemEntity(
             name: 'Bintang Muhammad Surya Al-Farisy',
@@ -62,6 +65,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
           CandidateItemEntity(
             name: 'Nola Septiani Pramita',
@@ -77,6 +81,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
           CandidateItemEntity(
             name: 'Farah Fauziah Danopa',
@@ -92,6 +97,7 @@ class StaticData {
               'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
               'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
             ],
+            urlVideo: 'EKLQOI7CXYI',
           ),
         ],
       );

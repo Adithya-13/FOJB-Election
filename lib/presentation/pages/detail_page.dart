@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailPage extends StatefulWidget {
   final ArgumentBundle? bundle;
@@ -48,71 +50,101 @@ class _DetailPageState extends State<DetailPage> {
         ),
         title: Text('Detail Caketum', style: AppTheme.headline3.white),
       ),
-      body: BlocListener<VoteBloc, VoteState>(
-        listener: (context, state) {
-          if (state is VoteCheck) {
-            if (state.isUserCanVote) {
-              Navigator.pushNamed(context, PagePath.vote);
-            } else {
-              Helper.snackBar(
-                context,
-                message:
-                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                isError: true,
-              );
+      body: SafeArea(
+        child: BlocListener<VoteBloc, VoteState>(
+          listener: (context, state) {
+            if (state is VoteCheck) {
+              if (state.isUserCanVote) {
+                Navigator.pushNamed(context, PagePath.vote);
+              } else {
+                Helper.snackBar(
+                  context,
+                  message:
+                      'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                  isError: true,
+                );
+              }
             }
-          }
-        },
-        child: BlocBuilder<CandidateBloc, CandidateState>(
-          buildWhen: (previous, current) => current is CandidateByIndexSuccess,
-          builder: (context, state) {
-            if (state is CandidateLoading) {
-              Container(
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.darkBlue,
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
-                    strokeWidth: 6,
-                  ),
-                ),
-              );
-            } else if (state is CandidateEmpty) {
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: Text('Candidate Empty', style: AppTheme.headline3),
-                ),
-              );
-            } else if (state is CandidateFailure) {
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: Text('Candidate Failure', style: AppTheme.headline3),
-                ),
-              );
-            } else if(state is CandidateByIndexSuccess){
-              final candidate = state.entity;
-              return SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.all(Helper.normalPadding),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _headerDetail(context, candidate),
-                      _description(context, candidate),
-                      _vision(context, candidate),
-                      _mission(context, candidate),
-                      _vote(context, candidate),
-                    ],
-                  ),
-                ),
-              );
-            }
-            return Container();
           },
+          child: BlocBuilder<CandidateBloc, CandidateState>(
+            buildWhen: (previous, current) =>
+                current is CandidateByIndexSuccess,
+            builder: (context, state) {
+              if (state is CandidateLoading) {
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppTheme.darkBlue,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                      strokeWidth: 6,
+                    ),
+                  ),
+                );
+              } else if (state is CandidateEmpty) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Empty', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (state is CandidateFailure) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Failure', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (state is CandidateByIndexSuccess) {
+                final candidate = state.entity;
+                return SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Container(
+                    padding: EdgeInsets.all(Helper.normalPadding),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _youtubeVideo(context, candidate),
+                        _headerDetail(context, candidate),
+                        _description(context, candidate),
+                        _vision(context, candidate),
+                        _mission(context, candidate),
+                        _vote(context, candidate),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _youtubeVideo(BuildContext context, CandidateItemEntity candidate) {
+    return  Container(
+      margin: EdgeInsets.only(bottom: Helper.normalPadding),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: Helper.getBigShadow(),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: YoutubePlayer(
+          controller: YoutubePlayerController(
+            initialVideoId: candidate.urlVideo, //Add videoID.
+            flags: YoutubePlayerFlags(
+              hideControls: false,
+              controlsVisibleAtStart: true,
+              autoPlay: false,
+              mute: false,
+            ),
+          ),
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: AppTheme.green,
         ),
       ),
     );
