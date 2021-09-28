@@ -1,6 +1,7 @@
 export 'auth/auth_bloc.dart';
 export 'vote/vote_bloc.dart';
 export 'candidate/candidate_bloc.dart';
+export 'count/count_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -60,13 +60,7 @@ class FojbRepository {
     final sixth = await _countDataSource.getSixthCandidate();
 
     return CountEntity(
-      total: total.toString(),
-      first: first.toString(),
-      second: second.toString(),
-      third: third.toString(),
-      fourth: fourth.toString(),
-      fifth: fifth.toString(),
-      sixth: sixth.toString(),
-    );
+        total: total,
+        countCandidates: [first, second, third, fourth, fifth, sixth]);
   }
 }
