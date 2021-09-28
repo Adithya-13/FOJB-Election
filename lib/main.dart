@@ -47,6 +47,11 @@ void main() async {
               getStorage: _getStorage,
             ),
           ),
+          BlocProvider(
+            create: (context) => CandidateBloc(
+              fojbRepository: context.read<FojbRepository>(),
+            ),
+          ),
         ],
         child: MyApp(),
       ),
