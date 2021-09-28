@@ -102,6 +102,7 @@ class _DetailPageState extends State<DetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _headerDetail(context, candidate),
+                      _description(context, candidate),
                       _vision(context, candidate),
                       _mission(context, candidate),
                       _vote(context, candidate),
@@ -172,6 +173,28 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _description(BuildContext context, CandidateItemEntity candidate) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            'Deskripsi',
+            style: AppTheme.headline3,
+          ),
+          SizedBox(height: Helper.normalPadding),
+          Text(
+            candidate.description,
+            style: AppTheme.text2.increaseHeight,
+            textAlign: TextAlign.justify,
           ),
         ],
       ),
