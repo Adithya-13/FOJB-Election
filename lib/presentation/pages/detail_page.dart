@@ -9,7 +9,8 @@ import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:get_storage/get_storage.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
+  final ArgumentBundle? bundle;
+  const DetailPage({Key? key, required this.bundle}) : super(key: key);
 
   @override
   _DetailPageState createState() => _DetailPageState();

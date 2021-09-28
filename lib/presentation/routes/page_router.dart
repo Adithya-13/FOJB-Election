@@ -17,10 +17,14 @@ class PageRouter {
       case PagePath.base:
         return _buildRoute(settings, BasePage());
       case PagePath.detail:
-        return _buildRoute(settings, DetailPage());
-      case PagePath.vote:
         return _buildRoute(
-            settings, VotePage());
+          settings,
+          DetailPage(
+            bundle: args as ArgumentBundle?,
+          ),
+        );
+      case PagePath.vote:
+        return _buildRoute(settings, VotePage());
       case PagePath.afterVote:
         return _buildRoute(settings, AfterVotePage());
       default:
