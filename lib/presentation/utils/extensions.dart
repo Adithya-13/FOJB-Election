@@ -14,6 +14,7 @@ extension StyleText on TextStyle {
   TextStyle get blue => this.copyWith(color: AppTheme.blue);
   TextStyle get black => this.copyWith(color: AppTheme.black);
   TextStyle get white => this.copyWith(color: AppTheme.white);
+  TextStyle get increaseHeight => this.copyWith(height: 1.5);
   TextStyle get whiteOpacity => this.copyWith(color: AppTheme.whiteOpacity);
 }
 
