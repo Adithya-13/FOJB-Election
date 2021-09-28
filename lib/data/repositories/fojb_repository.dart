@@ -2,6 +2,7 @@ import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/data/models/models.dart';
 import 'package:fojb_election/data/providers/remotes/remotes.dart';
 import 'package:fojb_election/data/utils/data_mapper.dart';
+import 'package:fojb_election/data/utils/static_data.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 
 class FojbRepository {
@@ -33,5 +34,15 @@ class FojbRepository {
 
   Future<bool> checkUserVote({required String id}) async {
     return _voteDataSource.checkUserVote(id: id);
+  }
+
+  Future<CandidateEntity> getCandidates() async {
+    final entity = StaticData.getCandidates();
+    return entity;
+  }
+
+  Future<CandidateItemEntity> getCandidateByIndex(int index) async {
+    final entity = StaticData.getCandidateByIndex(index);
+    return entity;
   }
 }
