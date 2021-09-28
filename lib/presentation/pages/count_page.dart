@@ -35,7 +35,32 @@ class _CountPageState extends State<CountPage> {
         builder: (context, candidateState) {
           return BlocBuilder<CountBloc, CountState>(
             builder: (context, countState) {
-              if (candidateState is CandidateSuccess &&
+              if (candidateState is CandidateLoading || countState is CountLoading) {
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppTheme.darkBlue,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                      strokeWidth: 6,
+                    ),
+                  ),
+                );
+              } else if (candidateState is CandidateEmpty || countState is CountEmpty) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Empty', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (candidateState is CandidateFailure || countState is CountFailure) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Failure', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (candidateState is CandidateSuccess &&
                   countState is CountSuccess) {
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
