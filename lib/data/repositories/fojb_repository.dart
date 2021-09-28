@@ -1,3 +1,4 @@
+import 'package:fojb_election/data/entities/count_entity.dart';
 import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/data/models/models.dart';
 import 'package:fojb_election/data/providers/remotes/remotes.dart';
@@ -8,12 +9,15 @@ import 'package:fojb_election/presentation/utils/utils.dart';
 class FojbRepository {
   final UserDataSource _userDataSource;
   final VoteDataSource _voteDataSource;
+  final CountDataSource _countDataSource;
 
   FojbRepository({
     required UserDataSource userDataSource,
     required VoteDataSource voteDataSource,
+    required CountDataSource countDataSource,
   })  : _userDataSource = userDataSource,
-        _voteDataSource = voteDataSource;
+        _voteDataSource = voteDataSource,
+        _countDataSource = countDataSource;
 
   Future<UserEntity> getUserByPhone({required String id}) async {
     dynamic idUser = id.isNumeric ? int.tryParse(id) : id;
@@ -44,5 +48,25 @@ class FojbRepository {
   Future<CandidateItemEntity> getCandidateByIndex(int index) async {
     final entity = StaticData.getCandidateByIndex(index);
     return entity;
+  }
+
+  Future<CountEntity> getCountAll() async {
+    final total = await _countDataSource.getTotal();
+    final first = await _countDataSource.getFirstCandidate();
+    final second = await _countDataSource.getSecondCandidate();
+    final third = await _countDataSource.getThirdCandidate();
+    final fourth = await _countDataSource.getFourthCandidate();
+    final fifth = await _countDataSource.getFifthCandidate();
+    final sixth = await _countDataSource.getSixthCandidate();
+
+    return CountEntity(
+      total: total.toString(),
+      first: first.toString(),
+      second: second.toString(),
+      third: third.toString(),
+      fourth: fourth.toString(),
+      fifth: fifth.toString(),
+      sixth: sixth.toString(),
+    );
   }
 }

@@ -6,6 +6,7 @@ import 'package:fojb_election/data/exceptions/api_exception.dart';
 import 'package:fojb_election/data/providers/remotes/remotes.dart';
 import 'package:fojb_election/logic/blocs/auth/auth_bloc.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
+import 'package:fojb_election/logic/blocs/count/count_bloc.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ void main() async {
           create: (context) => FojbRepository(
             userDataSource: UserDataSource(ref: _ref),
             voteDataSource: VoteDataSource(ref: _ref),
+            countDataSource: CountDataSource(ref: _ref),
           ),
         ),
       ],
@@ -49,6 +51,11 @@ void main() async {
           ),
           BlocProvider(
             create: (context) => CandidateBloc(
+              fojbRepository: context.read<FojbRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CountBloc(
               fojbRepository: context.read<FojbRepository>(),
             ),
           ),
