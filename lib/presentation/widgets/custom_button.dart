@@ -35,6 +35,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             text,
             style: isOutline ? AppTheme.text2.bold : AppTheme.text2.bold.white,
+            textAlign: TextAlign.center,
           ),
         ),
       ),

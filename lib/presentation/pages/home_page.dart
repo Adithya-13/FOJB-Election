@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
+import 'package:fojb_election/presentation/routes/argument_bundle.dart';
 import 'package:fojb_election/presentation/routes/page_path.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/custom_button.dart';
@@ -96,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                     overflow: TextOverflow.visible,
                   ),
                 ),
+                SizedBox(width: Helper.smallPadding),
                 Flexible(
                   child: GestureDetector(
                     onTap: () {
@@ -138,6 +140,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: Helper.normalPadding),
           BlocBuilder<CandidateBloc, CandidateState>(
+            buildWhen: (previous, current) => current is CandidateSuccess,
             builder: (context, state) {
               if (state is CandidateLoading) {
                 Container(
@@ -165,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               } else if (state is CandidateSuccess) {
-                final candidates = (state.entity as CandidateEntity).candidates;
+                final candidates = state.entity.candidates;
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.36,
                   alignment: Alignment.topRight,
@@ -192,7 +195,11 @@ class _HomePageState extends State<HomePage> {
   Widget _candidateItem(
       BuildContext context, int index, CandidateItemEntity candidate) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, PagePath.detail),
+      onTap: () => Navigator.pushNamed(
+        context,
+        PagePath.detail,
+        arguments: ArgumentBundle(id: index),
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.white,

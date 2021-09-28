@@ -14,9 +14,18 @@ class CandidateLoading extends CandidateState {}
 class CandidateEmpty extends CandidateState {}
 
 class CandidateSuccess extends CandidateState {
-  final BaseEntity entity;
+  final CandidateEntity entity;
 
   CandidateSuccess({required this.entity});
+
+  @override
+  List<Object?> get props => [entity];
+}
+
+class CandidateByIndexSuccess extends CandidateState {
+  final CandidateItemEntity entity;
+
+  CandidateByIndexSuccess({required this.entity});
 
   @override
   List<Object?> get props => [entity];

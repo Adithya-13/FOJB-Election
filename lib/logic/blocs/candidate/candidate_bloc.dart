@@ -35,7 +35,7 @@ class CandidateBloc extends Bloc<CandidateEvent, CandidateState> {
       try {
         final CandidateItemEntity entity =
             await _fojbRepository.getCandidateByIndex(event.id);
-        emit(CandidateSuccess(entity: entity));
+        emit(CandidateByIndexSuccess(entity: entity));
       } catch (e, stacktrace) {
         emit(CandidateFailure(
             message: 'unable to get Candidates : $e, stacktrace: $stacktrace'));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
@@ -10,6 +11,7 @@ import 'package:get_storage/get_storage.dart';
 
 class DetailPage extends StatefulWidget {
   final ArgumentBundle? bundle;
+
   const DetailPage({Key? key, required this.bundle}) : super(key: key);
 
   @override
@@ -18,14 +20,20 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   final GetStorage getStorage = GetStorage();
+  late int index;
   late String id;
 
   @override
   void initState() {
+    if (widget.bundle != null) {
+      index = widget.bundle!.id;
+    }
+    context.read<CandidateBloc>().add(GetCandidateByIndex(id: index));
     String id = getStorage.read(Keys.id);
     this.id = id;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,33 +57,67 @@ class _DetailPageState extends State<DetailPage> {
               Helper.snackBar(
                 context,
                 message:
-                'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
                 isError: true,
               );
             }
           }
         },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
-            padding: EdgeInsets.all(Helper.normalPadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _headerDetail(context),
-                _vision(context),
-                _mission(context),
-                _vote(context),
-              ],
-            ),
-          ),
+        child: BlocBuilder<CandidateBloc, CandidateState>(
+          buildWhen: (previous, current) => current is CandidateByIndexSuccess,
+          builder: (context, state) {
+            if (state is CandidateLoading) {
+              Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.darkBlue,
+                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                    strokeWidth: 6,
+                  ),
+                ),
+              );
+            } else if (state is CandidateEmpty) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: Text('Candidate Empty', style: AppTheme.headline3),
+                ),
+              );
+            } else if (state is CandidateFailure) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: Text('Candidate Failure', style: AppTheme.headline3),
+                ),
+              );
+            } else if(state is CandidateByIndexSuccess){
+              final candidate = state.entity;
+              return SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: EdgeInsets.all(Helper.normalPadding),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _headerDetail(context, candidate),
+                      _vision(context, candidate),
+                      _mission(context, candidate),
+                      _vote(context, candidate),
+                    ],
+                  ),
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );
   }
 
-  Widget _headerDetail(BuildContext context) {
+  Widget _headerDetail(BuildContext context, CandidateItemEntity candidate) {
     return Container(
       child: Row(
         children: [
@@ -101,22 +143,24 @@ class _DetailPageState extends State<DetailPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Farah Fauziah Danopa',
+                  candidate.name,
                   style: AppTheme.headline3,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: Helper.smallPadding),
                 Text(
-                  'Kab. Majalengka',
+                  candidate.school,
                   style: AppTheme.text2,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: Helper.smallPadding),
                 Text(
-                  'SMA Negeri 1 Majalengka',
+                  candidate.origin,
                   style: AppTheme.text2,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: Helper.normalPadding),
                 CustomButton(
@@ -124,7 +168,7 @@ class _DetailPageState extends State<DetailPage> {
                     context: context,
                     builder: (context) => _announcementDialog(context),
                   ),
-                  text: 'Vote Farah',
+                  text: 'Vote ${candidate.name.firstWord}',
                 ),
               ],
             ),
@@ -134,7 +178,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _vision(BuildContext context) {
+  Widget _vision(BuildContext context, CandidateItemEntity candidate) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -147,7 +191,7 @@ class _DetailPageState extends State<DetailPage> {
           ),
           SizedBox(height: Helper.normalPadding),
           Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            candidate.vision,
             style: AppTheme.text2.increaseHeight,
             textAlign: TextAlign.justify,
           ),
@@ -156,7 +200,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _mission(BuildContext context) {
+  Widget _mission(BuildContext context, CandidateItemEntity candidate) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -171,7 +215,7 @@ class _DetailPageState extends State<DetailPage> {
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: Helper.missions
+            children: candidate.mission
                 .map((e) => Container(
                       margin: EdgeInsets.only(bottom: 4),
                       child: Row(
@@ -198,7 +242,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _vote(BuildContext context) {
+  Widget _vote(BuildContext context, CandidateItemEntity candidate) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -209,7 +253,7 @@ class _DetailPageState extends State<DetailPage> {
               context: context,
               builder: (context) => _announcementDialog(context),
             ),
-            text: 'Vote Farah',
+            text: 'Vote ${candidate.name.firstWord}',
           ),
         ],
       ),
@@ -222,6 +266,7 @@ class _DetailPageState extends State<DetailPage> {
       content: Text(
         'Pastikan apa yang kamu pilih adalah pilihanmu sendiri, tidak ada campur tangan orang lain dan sesuai dengan kata hati',
         style: AppTheme.text3,
+        textAlign: TextAlign.center,
       ),
       buttons: CustomButton(
         onTap: () {
