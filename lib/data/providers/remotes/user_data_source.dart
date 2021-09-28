@@ -15,7 +15,7 @@ class UserDataSource {
         .equalTo(id)
         .once()
         .then<User>((DataSnapshot dataSnapshot) {
-          print(dataSnapshot.value);
+      print(dataSnapshot.value);
       if (dataSnapshot.value is List<Object?>) {
         print('this is list');
         print(dataSnapshot.value);

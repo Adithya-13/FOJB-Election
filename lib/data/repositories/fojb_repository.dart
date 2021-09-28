@@ -16,6 +16,7 @@ class FojbRepository {
 
   Future<UserEntity> getUserByPhone({required String id}) async {
     dynamic idUser = id.isNumeric ? int.tryParse(id) : id;
+    print('repository');
     final User user = await _userDataSource.getUserByPhone(id: idUser);
 
     return DataMapper.userMapper(user: user);

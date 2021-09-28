@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1048060533121",
+    "firebase_url": "https://fojb-election-af8d3-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "fojb-election-af8d3",
     "storage_bucket": "fojb-election-af8d3.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "1048060533121-ta96vj95iq28vq1djmouvdt5rfom5o1t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1048060533121-45sncefssnpu058u7sm3qkptsadbc81n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fojb.project.fojb-election"
+              }
             }
           ]
         }

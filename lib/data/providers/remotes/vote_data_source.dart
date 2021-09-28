@@ -9,12 +9,18 @@ class VoteDataSource {
   }) : _ref = ref;
 
   Future<bool> checkUserVote({required String id}) async {
-    User? user = await _ref.child('data').child('total').orderByChild('id').equalTo(id).once().then<User?>((DataSnapshot dataSnapshot) {
+    User? user = await _ref
+        .child('data')
+        .child('total')
+        .orderByChild('id')
+        .equalTo(id)
+        .once()
+        .then<User?>((DataSnapshot dataSnapshot) {
       print('isUserCanVote: ' + dataSnapshot.value.toString());
-      if(dataSnapshot.exists){
+      if (dataSnapshot.exists) {
         Map<dynamic, dynamic> values = dataSnapshot.value;
         User? user;
-        values.forEach((key,values) {
+        values.forEach((key, values) {
           print(values['id']);
           print(values['name']);
           user = User.fromJson(values);
@@ -28,9 +34,9 @@ class VoteDataSource {
 
   Future<void> doVote(
       {required int position,
-        required String name,
-        required String id,
-        int weight: 1}) async {
+      required String name,
+      required String id,
+      int weight: 1}) async {
     for (int i = 0; i < weight; i++) {
       await _ref
           .child('data')
