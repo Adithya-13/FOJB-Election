@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fojb_election/data/entities/entities.dart';
+import 'package:fojb_election/data/exceptions/failure.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
@@ -47,9 +48,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         yield AuthFailure(message: 'No Telp atau Password salah');
       }
-    } catch (e, stacktrace) {
+    } on Failure catch (e, stacktrace) {
+      print(stacktrace);
       yield AuthFailure(
-        message: 'unable to post auth : $e, stacktrace: $stacktrace',
+        message: 'unable to login : ${e.message}',
       );
     }
   }
@@ -64,9 +66,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _getStorage.remove(Keys.type);
       await _getStorage.remove(Keys.isLoggedIn);
       yield LogoutSuccess();
-    } catch (e, stacktrace) {
+    } on Failure catch (e, stacktrace) {
+      print(stacktrace);
       yield AuthFailure(
-        message: 'unable to post auth : $e, stacktrace: $stacktrace',
+        message: 'unable to logout : ${e.message}',
       );
     }
   }

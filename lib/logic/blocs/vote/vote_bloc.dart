@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fojb_election/data/exceptions/failure.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
 
 part 'vote_event.dart';
@@ -20,9 +21,15 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, Vot
         super(VoteInitial()) {
     on<CheckCanVote>((event, emit) async {
       emit(VoteLoading());
-      final bool isUserCanVote = await _fojbRepository.checkUserVote(id: event.id);
-      print('isUserCanVote $isUserCanVote');
-      emit(VoteCheck(isUserCanVote: isUserCanVote));
+      try{
+        final bool isUserCanVote = await _fojbRepository.checkUserVote(id: event.id);
+        print('isUserCanVote $isUserCanVote');
+        emit(VoteCheck(isUserCanVote: isUserCanVote));
+      } on Failure catch(e, stacktrace) {
+        print(stacktrace);
+        emit(VoteFailure(
+            message: 'unable to Vote: ${e.message}'));
+      }
     });
     on<PostVote>((event, emit) async {
       emit(VoteLoading());
@@ -38,9 +45,10 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, Vot
         } else {
           emit(VoteCheck(isUserCanVote: false));
         }
-      } catch (e, stacktrace) {
+      } on Failure catch (e, stacktrace) {
+        print(stacktrace);
         emit(VoteFailure(
-            message: 'unable to Vote: $e, stacktrace: $stacktrace'));
+            message: 'unable to Vote: ${e.message}'));
       }
     });
   }

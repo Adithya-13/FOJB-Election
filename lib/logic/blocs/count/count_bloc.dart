@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fojb_election/data/entities/entities.dart';
+import 'package:fojb_election/data/exceptions/failure.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
 
 part 'count_event.dart';
@@ -20,8 +21,9 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       try{
         final entity = await _fojbRepository.getCountAll();
         emit(CountSuccess(entity: entity));
-      } catch (e, stacktrace){
-        emit(CountFailure(message: 'unable to get counts: $e, stacktrace $stacktrace'));
+      } on Failure catch (e, stacktrace){
+        print(stacktrace);
+        emit(CountFailure(message: 'unable to get counts: ${e.message}'));
       }
     });
   }

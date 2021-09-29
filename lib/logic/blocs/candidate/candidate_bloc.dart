@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fojb_election/data/entities/entities.dart';
+import 'package:fojb_election/data/exceptions/failure.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
 
 part 'candidate_event.dart';
@@ -24,9 +25,10 @@ class CandidateBloc extends Bloc<CandidateEvent, CandidateState> {
           return;
         }
         emit(CandidateSuccess(entity: entity));
-      } catch (e, stacktrace) {
+      } on Failure catch (e, stacktrace) {
+        print(stacktrace);
         emit(CandidateFailure(
-            message: 'unable to get Candidates : $e, stacktrace: $stacktrace'));
+            message: 'unable to get Candidates : ${e.message}'));
       }
     });
 
@@ -36,9 +38,10 @@ class CandidateBloc extends Bloc<CandidateEvent, CandidateState> {
         final CandidateItemEntity entity =
             await _fojbRepository.getCandidateByIndex(event.id);
         emit(CandidateByIndexSuccess(entity: entity));
-      } catch (e, stacktrace) {
+      } on Failure catch (e, stacktrace) {
+        print(stacktrace);
         emit(CandidateFailure(
-            message: 'unable to get Candidates : $e, stacktrace: $stacktrace'));
+            message: 'unable to get Candidate by Index : ${e.message}'));
       }
     });
   }
