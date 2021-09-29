@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
@@ -84,19 +85,53 @@ class _VotePageState extends State<VotePage> {
                 }
               }
             },
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.all(Helper.normalPadding),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _gridListCandidate(context),
-                    _vote(context),
-                  ],
-                ),
-              ),
+            child:           BlocBuilder<CandidateBloc, CandidateState>(
+              buildWhen: (previous, current) => current is CandidateSuccess,
+              builder: (context, state) {
+                if (state is CandidateLoading) {
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.darkBlue,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                        strokeWidth: 6,
+                      ),
+                    ),
+                  );
+                } else if (state is CandidateEmpty) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: Text('Candidate Empty', style: AppTheme.headline3),
+                    ),
+                  );
+                } else if (state is CandidateFailure) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: Text('Candidate Failure', style: AppTheme.headline3),
+                    ),
+                  );
+                } else if (state is CandidateSuccess){
+                  final candidateEntity = state.entity;
+                  return  SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Container(
+                      padding: EdgeInsets.all(Helper.normalPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _gridListCandidate(context, candidateEntity),
+                          _vote(context, candidateEntity),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
           ),
         ),
@@ -104,7 +139,7 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _gridListCandidate(BuildContext context) {
+  Widget _gridListCandidate(BuildContext context, CandidateEntity candidateEntity) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -115,107 +150,73 @@ class _VotePageState extends State<VotePage> {
             style: AppTheme.headline3,
           ),
           SizedBox(height: Helper.normalPadding),
-          BlocBuilder<CandidateBloc, CandidateState>(
-            buildWhen: (previous, current) => current is CandidateSuccess,
-            builder: (context, state) {
-              if (state is CandidateLoading) {
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppTheme.darkBlue,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
-                      strokeWidth: 6,
-                    ),
+          GridView.builder(
+            itemCount: candidateEntity.candidates.length,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 7 / 10,
+              crossAxisSpacing: Helper.normalPadding,
+              mainAxisSpacing: Helper.normalPadding,
+            ),
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final candidate = candidateEntity.candidates[index];
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    vote = index;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: vote == index ? AppTheme.lightGreen : AppTheme
+                        .white,
+                    boxShadow: vote == index ? null : Helper.getShadow(),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                );
-              } else if (state is CandidateEmpty) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: Text('Candidate Empty', style: AppTheme.headline3),
-                  ),
-                );
-              } else if (state is CandidateFailure) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: Text('Candidate Failure', style: AppTheme.headline3),
-                  ),
-                );
-              } else if (state is CandidateSuccess){
-                final candidates = state.entity.candidates;
-                return GridView.builder(
-                  itemCount: candidates.length,
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 7 / 10,
-                    crossAxisSpacing: Helper.normalPadding,
-                    mainAxisSpacing: Helper.normalPadding,
-                  ),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final candidate = candidates[index];
-                    return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            vote = index;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: vote == index ? AppTheme.lightGreen : AppTheme
-                                .white,
-                            boxShadow: vote == index ? null : Helper.getShadow(),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.all(Helper.smallPadding),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    candidate.img,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                candidate.name,
-                                style: AppTheme.text1.bold,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                candidate.origin,
-                                style: AppTheme.subText1,
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                  padding: EdgeInsets.all(Helper.smallPadding),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            candidate.img,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      );
-                  },
-                );
-              }
-              return Container();
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        candidate.name,
+                        style: AppTheme.text1.bold,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        candidate.origin,
+                        style: AppTheme.subText1,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
-          ),
+          )
         ],
       ),
     );
   }
 
-  Widget _vote(BuildContext context) {
+  Widget _vote(BuildContext context, CandidateEntity candidateEntity) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -229,7 +230,7 @@ class _VotePageState extends State<VotePage> {
               }
               showDialog(
                 context: context,
-                builder: (context) => _confirmationDialog(context),
+                builder: (context) => _confirmationDialog(context, candidateEntity.candidates[vote!]),
               );
             },
             isEnable: vote != null,
@@ -240,11 +241,11 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _confirmationDialog(BuildContext context) {
+  Widget _confirmationDialog(BuildContext context, CandidateItemEntity candidate) {
     return CustomDialog(
       title: 'Konfirmasi',
       content: Text(
-        'Anda yakin memilih Farah Fauziah Danopa dari Kab. Majalengka?',
+        'Anda yakin memilih ${candidate.name} dari ${candidate.origin}?',
         style: AppTheme.text3,
       ),
       buttons: CustomButton(

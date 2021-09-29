@@ -99,7 +99,7 @@ class StaticData {
               'Menjalin kerjasama dengan pihak lain supaya tercipta hubungan yang baik dan memberi dampak positif bagi FOJB.',
               'Melakukan improvisasi untuk meningkatkan skills yang akan menjadi sarana pengembangan berpikir kritis.',
             ],
-            urlVideo: 'EKLQOI7CXYI',
+            urlVideo: 'Xug173QyKvc',
             img: Resources.nola
           ),
           CandidateItemEntity(
@@ -117,7 +117,7 @@ class StaticData {
               'Menciptakan ruang kolaborasi antar FOJB dengan pihak internal juga eksternal. Serta sebagai penampung dan penyalur aspirasi pelajar di Jawa Barat.',
               'Menciptakan organisasi yang Harmoni berkaitan dengan “kesearahan” yaitu suatu proses bagaimana potensi potensi individu disatukan secara sinergis dalam organisasi.',
             ],
-            urlVideo: 'EKLQOI7CXYI',
+            urlVideo: 'BBO7sib-NMo',
             img: Resources.farah
           ),
         ],
