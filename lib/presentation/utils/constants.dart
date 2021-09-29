@@ -14,6 +14,12 @@ class Resources {
 
   static const String fojbLogo = '$_baseImg/fojb_logo.png';
   static const String imgDummy = '$_baseImg/img_dummy.png';
+  static const String fauzan = '$_baseImg/fauzan.jpg';
+  static const String razinah = '$_baseImg/razinah.jpg';
+  static const String azzikri = '$_baseImg/azzikri.jpg';
+  static const String mesa = '$_baseImg/mesa.jpg';
+  static const String nola = '$_baseImg/nola.jpg';
+  static const String farah = '$_baseImg/farah.jpg';
 }
 
 class Keys {

@@ -24,16 +24,34 @@ class _DetailPageState extends State<DetailPage> {
   final GetStorage getStorage = GetStorage();
   late int index;
   late String id;
+  late YoutubePlayerController _youtubeController;
 
   @override
   void initState() {
     if (widget.bundle != null) {
       index = widget.bundle!.id;
     }
+    _youtubeController = YoutubePlayerController(
+      initialVideoId: 'IfE3j-i9PV8', //Add videoID.
+      flags: YoutubePlayerFlags(
+        hideControls: false,
+        controlsVisibleAtStart: false,
+        autoPlay: true,
+        mute: false,
+        loop: true,
+        hideThumbnail: true,
+      ),
+    );
     context.read<CandidateBloc>().add(GetCandidateByIndex(id: index));
     String id = getStorage.read(Keys.id);
     this.id = id;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,7 +73,8 @@ class _DetailPageState extends State<DetailPage> {
           listener: (blocContext, state) {
             if (state is VoteCheck) {
               if (state.isUserCanVote) {
-                  Navigator.pushNamed(context, PagePath.vote, arguments: ArgumentBundle(id: index));
+                Navigator.pushNamed(context, PagePath.vote,
+                    arguments: ArgumentBundle(id: index));
               } else {
                 Helper.snackBar(
                   context,
@@ -125,24 +144,29 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Widget _youtubeVideo(BuildContext context, CandidateItemEntity candidate) {
-    return  Container(
+    return Container(
       margin: EdgeInsets.only(bottom: Helper.normalPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        boxShadow: Helper.getBigShadow(),
+        boxShadow: Helper.getShadow(),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: YoutubePlayer(
-          controller: YoutubePlayerController(
-            initialVideoId: candidate.urlVideo, //Add videoID.
-            flags: YoutubePlayerFlags(
-              hideControls: false,
-              controlsVisibleAtStart: true,
-              autoPlay: false,
-              mute: false,
+          controller: _youtubeController,
+          bottomActions: [
+            const SizedBox(width: 14.0),
+            CurrentPosition(),
+            const SizedBox(width: 8.0),
+            ProgressBar(
+              isExpanded: true,
             ),
-          ),
+            RemainingDuration(),
+            const PlaybackSpeedButton(),
+          ],
+          onReady: () {
+            _youtubeController.load(candidate.urlVideo);
+          },
           showVideoProgressIndicator: true,
           progressIndicatorColor: AppTheme.green,
         ),
@@ -164,7 +188,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(Resources.imgDummy, fit: BoxFit.cover),
+                  child: Image.asset(candidate.img, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -270,13 +294,17 @@ class _DetailPageState extends State<DetailPage> {
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: candidate.mission.asMap()
-                .map((index, value) => MapEntry(index, Container(
+            children: candidate.mission
+                .asMap()
+                .map((index, value) => MapEntry(
+                      index,
+                      Container(
                         margin: EdgeInsets.only(bottom: 4),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text((index + 1).toString() + '.', style: AppTheme.text2),
+                            Text((index + 1).toString() + '.',
+                                style: AppTheme.text2),
                             SizedBox(width: Helper.normalPadding),
                             Expanded(
                               child: Text(value, style: AppTheme.text2),
@@ -284,7 +312,9 @@ class _DetailPageState extends State<DetailPage> {
                           ],
                         ),
                       ),
-                )).values.toList(),
+                    ))
+                .values
+                .toList(),
           ),
         ],
       ),

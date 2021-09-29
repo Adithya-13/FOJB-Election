@@ -159,7 +159,7 @@ class _CountPageState extends State<CountPage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    Resources.imgDummy,
+                    candidate.img,
                     fit: BoxFit.cover,
                     height: MediaQuery.of(context).size.height * 0.16,
                   ),
