@@ -51,11 +51,11 @@ class _DetailPageState extends State<DetailPage> {
         title: Text('Detail Caketum', style: AppTheme.headline3.white),
       ),
       body: SafeArea(
-        child: BlocListener<VoteBloc, VoteState>(
-          listener: (context, state) {
+        child: BlocListener<DetailVote, VoteState>(
+          listener: (blocContext, state) {
             if (state is VoteCheck) {
               if (state.isUserCanVote) {
-                Navigator.pushNamed(context, PagePath.vote);
+                  Navigator.pushNamed(context, PagePath.vote, arguments: ArgumentBundle(id: index));
               } else {
                 Helper.snackBar(
                   context,
@@ -201,7 +201,7 @@ class _DetailPageState extends State<DetailPage> {
                     context: context,
                     builder: (context) => _announcementDialog(context),
                   ),
-                  text: 'Vote ${candidate.name.firstWord}',
+                  text: 'Vote ${Dummy.shortName[index]}',
                 ),
               ],
             ),
@@ -308,7 +308,7 @@ class _DetailPageState extends State<DetailPage> {
               context: context,
               builder: (context) => _announcementDialog(context),
             ),
-            text: 'Vote ${candidate.name.firstWord}',
+            text: 'Vote ${Dummy.shortName[index]}',
           ),
         ],
       ),
@@ -325,7 +325,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
       buttons: CustomButton(
         onTap: () {
-          context.read<VoteBloc>().add(CheckCanVote(id: id));
+          context.read<DetailVote>().add(CheckCanVote(id: id));
           Navigator.pop(context);
         },
         text: 'Oke, mengerti',

@@ -1,22 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/data/repositories/repositories.dart';
-import 'package:fojb_election/presentation/utils/utils.dart';
-import 'package:get_storage/get_storage.dart';
 
 part 'vote_event.dart';
 
 part 'vote_state.dart';
+mixin HomeVote on Bloc<VoteEvent, VoteState> {}
 
-class VoteBloc extends Bloc<VoteEvent, VoteState> {
+mixin DetailVote on Bloc<VoteEvent, VoteState> {}
+
+mixin VotingVote on Bloc<VoteEvent, VoteState> {}
+
+class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, VotingVote {
   final FojbRepository _fojbRepository;
-  final GetStorage _getStorage;
 
   VoteBloc(
-      {required FojbRepository fojbRepository, required GetStorage getStorage})
+      {required FojbRepository fojbRepository})
       : _fojbRepository = fojbRepository,
-        _getStorage = getStorage,
         super(VoteInitial()) {
     on<CheckCanVote>((event, emit) async {
       emit(VoteLoading());

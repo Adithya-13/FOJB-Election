@@ -37,12 +37,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<VoteBloc, VoteState>(
+      body: BlocListener<HomeVote, VoteState>(
         listener: (context, state) {
-          print(state.toString());
           if (state is VoteCheck) {
             if (state.isUserCanVote) {
-              Navigator.pushNamed(context, PagePath.vote);
+                Navigator.pushNamed(context, PagePath.vote);
             } else {
               Helper.snackBar(
                 context,
@@ -296,7 +295,7 @@ class _HomePageState extends State<HomePage> {
       ),
       buttons: CustomButton(
         onTap: () {
-          context.read<VoteBloc>().add(CheckCanVote(id: id));
+          context.read<HomeVote>().add(CheckCanVote(id: id));
           Navigator.pop(context);
         },
         text: 'Oke, mengerti',

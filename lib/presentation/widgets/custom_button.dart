@@ -18,7 +18,11 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if(isEnable) {
+          onTap();
+        }
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

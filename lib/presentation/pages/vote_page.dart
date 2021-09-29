@@ -9,7 +9,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class VotePage extends StatefulWidget {
-  const VotePage({Key? key}) : super(key: key);
+  final ArgumentBundle? bundle;
+  const VotePage({Key? key, required this.bundle}) : super(key: key);
 
   @override
   _VotePageState createState() => _VotePageState();
@@ -23,6 +24,9 @@ class _VotePageState extends State<VotePage> {
 
   @override
   void initState() {
+    if (widget.bundle != null) {
+      vote = widget.bundle!.id;
+    }
     context.read<CandidateBloc>().add(GetCandidates());
     String name = getStorage.read(Keys.name);
     String id = getStorage.read(Keys.id);
@@ -55,41 +59,43 @@ class _VotePageState extends State<VotePage> {
           ),
           title: Text('Vote Caketum', style: AppTheme.headline3.white),
         ),
-        body: BlocListener<VoteBloc, VoteState>(
-          listener: (context, state) {
-            if (state is VoteLoading) {
-              context.loaderOverlay.show();
-              Helper.snackBar(context, message: 'Voting...');
-            } else if (state is VoteSuccess) {
-              context.loaderOverlay.hide();
-              Helper.snackBar(context, message: 'Vote Berhasil!');
-              Navigator.pushNamed(context, PagePath.afterVote);
-            } else if (state is VoteFailure) {
-              context.loaderOverlay.hide();
-              Helper.snackBar(context, message: state.message);
-            } else if (state is VoteCheck) {
-              context.loaderOverlay.hide();
-              if (!state.isUserCanVote) {
-                Helper.snackBar(
-                  context,
-                  message:
-                  'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                  isError: true,
-                );
+        body: SafeArea(
+          child: BlocListener<VotingVote, VoteState>(
+            listener: (context, state) {
+              if (state is VoteLoading) {
+                context.loaderOverlay.show();
+                Helper.snackBar(context, message: 'Voting...');
+              } else if (state is VoteSuccess) {
+                context.loaderOverlay.hide();
+                Helper.snackBar(context, message: 'Vote Berhasil!');
+                Navigator.pushNamed(context, PagePath.afterVote);
+              } else if (state is VoteFailure) {
+                context.loaderOverlay.hide();
+                Helper.snackBar(context, message: state.message);
+              } else if (state is VoteCheck) {
+                context.loaderOverlay.hide();
+                if (!state.isUserCanVote) {
+                  Helper.snackBar(
+                    context,
+                    message:
+                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                    isError: true,
+                  );
+                }
               }
-            }
-          },
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.all(Helper.normalPadding),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _gridListCandidate(context),
-                  _vote(context),
-                ],
+            },
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.all(Helper.normalPadding),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _gridListCandidate(context),
+                    _vote(context),
+                  ],
+                ),
               ),
             ),
           ),
@@ -161,7 +167,7 @@ class _VotePageState extends State<VotePage> {
                           decoration: BoxDecoration(
                             color: vote == index ? AppTheme.lightGreen : AppTheme
                                 .white,
-                            boxShadow: Helper.getShadow(),
+                            boxShadow: vote == index ? null : Helper.getShadow(),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           padding: EdgeInsets.all(Helper.smallPadding),
@@ -226,7 +232,8 @@ class _VotePageState extends State<VotePage> {
                 builder: (context) => _confirmationDialog(context),
               );
             },
-            text: 'Vote Farah',
+            isEnable: vote != null,
+            text: vote != null ? 'Vote ${Dummy.shortName[vote!]}' : 'Vote',
           ),
         ],
       ),
@@ -247,7 +254,7 @@ class _VotePageState extends State<VotePage> {
             return;
           }
           Navigator.pop(context);
-          context.read<VoteBloc>().add(
+          context.read<VotingVote>().add(
             PostVote(
               position: vote! + 1,
               id: id,

@@ -24,7 +24,12 @@ class PageRouter {
           ),
         );
       case PagePath.vote:
-        return _buildRoute(settings, VotePage());
+        return _buildRoute(
+          settings,
+          VotePage(
+            bundle: args as ArgumentBundle?,
+          ),
+        );
       case PagePath.afterVote:
         return _buildRoute(settings, AfterVotePage());
       default:

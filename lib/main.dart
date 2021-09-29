@@ -37,24 +37,33 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
+          BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               fojbRepository: context.read<FojbRepository>(),
               getStorage: _getStorage,
             ),
           ),
-          BlocProvider(
+          BlocProvider<HomeVote>(
             create: (context) => VoteBloc(
               fojbRepository: context.read<FojbRepository>(),
-              getStorage: _getStorage,
             ),
           ),
-          BlocProvider(
+          BlocProvider<DetailVote>(
+            create: (context) => VoteBloc(
+              fojbRepository: context.read<FojbRepository>(),
+            ),
+          ),
+          BlocProvider<VotingVote>(
+            create: (context) => VoteBloc(
+              fojbRepository: context.read<FojbRepository>(),
+            ),
+          ),
+          BlocProvider<CandidateBloc>(
             create: (context) => CandidateBloc(
               fojbRepository: context.read<FojbRepository>(),
             ),
           ),
-          BlocProvider(
+          BlocProvider<CountBloc>(
             create: (context) => CountBloc(
               fojbRepository: context.read<FojbRepository>(),
             ),
