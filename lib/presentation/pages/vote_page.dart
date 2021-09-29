@@ -23,6 +23,7 @@ class _VotePageState extends State<VotePage> {
 
   @override
   void initState() {
+    context.read<CandidateBloc>().add(GetCandidates());
     String name = getStorage.read(Keys.name);
     String id = getStorage.read(Keys.id);
     this.name = name;
@@ -72,7 +73,7 @@ class _VotePageState extends State<VotePage> {
                 Helper.snackBar(
                   context,
                   message:
-                      'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
+                  'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
                   isError: true,
                 );
               }
@@ -108,62 +109,100 @@ class _VotePageState extends State<VotePage> {
             style: AppTheme.headline3,
           ),
           SizedBox(height: Helper.normalPadding),
-          GridView.builder(
-            itemCount: 6,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 7 / 10,
-              crossAxisSpacing: Helper.normalPadding,
-              mainAxisSpacing: Helper.normalPadding,
-            ),
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                setState(() {
-                  vote = index;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: vote == index ? AppTheme.lightGreen : AppTheme.white,
-                  boxShadow: Helper.getShadow(),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.all(Helper.smallPadding),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          Resources.imgDummy,
-                          fit: BoxFit.cover,
+          BlocBuilder<CandidateBloc, CandidateState>(
+            buildWhen: (previous, current) => current is CandidateSuccess,
+            builder: (context, state) {
+              if (state is CandidateLoading) {
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppTheme.darkBlue,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                      strokeWidth: 6,
+                    ),
+                  ),
+                );
+              } else if (state is CandidateEmpty) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Empty', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (state is CandidateFailure) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text('Candidate Failure', style: AppTheme.headline3),
+                  ),
+                );
+              } else if (state is CandidateSuccess){
+                final candidates = state.entity.candidates;
+                return GridView.builder(
+                  itemCount: candidates.length,
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 7 / 10,
+                    crossAxisSpacing: Helper.normalPadding,
+                    mainAxisSpacing: Helper.normalPadding,
+                  ),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final candidate = candidates[index];
+                    return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            vote = index;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: vote == index ? AppTheme.lightGreen : AppTheme
+                                .white,
+                            boxShadow: Helper.getShadow(),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.all(Helper.smallPadding),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.asset(
+                                    Resources.imgDummy,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                candidate.name,
+                                style: AppTheme.text1.bold,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                candidate.origin,
+                                style: AppTheme.subText1,
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Farah Fauziah Danopa',
-                      style: AppTheme.text1.bold,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Kab. Majalengka',
-                      style: AppTheme.subText1,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                      );
+                  },
+                );
+              }
+              return Container();
+            },
           ),
         ],
       ),
@@ -209,12 +248,12 @@ class _VotePageState extends State<VotePage> {
           }
           Navigator.pop(context);
           context.read<VoteBloc>().add(
-                PostVote(
-                  position: vote! + 1,
-                  id: id,
-                  name: name,
-                ),
-              );
+            PostVote(
+              position: vote! + 1,
+              id: id,
+              name: name,
+            ),
+          );
         },
         text: 'Yap, saya yakin',
       ),
