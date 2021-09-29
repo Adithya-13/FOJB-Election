@@ -218,12 +218,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    candidate.img,
-                    fit: BoxFit.cover,
-                  ),
+                child: CustomNetworkImage(
+                  imgUrl: candidate.img,
+                  borderRadius: 20,
                 ),
               ),
               SizedBox(height: 8),

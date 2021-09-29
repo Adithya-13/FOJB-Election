@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 import 'package:fojb_election/data/exceptions/api_exception.dart';
 import 'package:fojb_election/data/providers/remotes/remotes.dart';
 import 'package:fojb_election/logic/blocs/auth/auth_bloc.dart';
@@ -23,7 +24,7 @@ void main() async {
   await Firebase.initializeApp();
   final DatabaseReference _ref = FirebaseDatabase.instance.reference();
   final GetStorage _getStorage = GetStorage();
-
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     MultiRepositoryProvider(
       providers: [

@@ -73,6 +73,7 @@ class _DetailPageState extends State<DetailPage> {
           listener: (blocContext, state) {
             if (state is VoteCheck) {
               if (state.isUserCanVote) {
+                _youtubeController.pause();
                 Navigator.pushNamed(context, PagePath.vote,
                     arguments: ArgumentBundle(id: index));
               } else {
@@ -186,9 +187,9 @@ class _DetailPageState extends State<DetailPage> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: Helper.getShadow(),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(candidate.img, fit: BoxFit.cover),
+                child: CustomNetworkImage(
+                  imgUrl: candidate.img,
+                  borderRadius: 20,
                 ),
               ),
             ),
@@ -307,7 +308,7 @@ class _DetailPageState extends State<DetailPage> {
                                 style: AppTheme.text2),
                             SizedBox(width: Helper.normalPadding),
                             Expanded(
-                              child: Text(value, style: AppTheme.text2),
+                              child: Text(value, style: AppTheme.text2.increaseHeight),
                             ),
                           ],
                         ),

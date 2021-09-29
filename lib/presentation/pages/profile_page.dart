@@ -5,6 +5,7 @@ import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -62,9 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: Helper.normalPadding),
                   _supports(),
                   SizedBox(height: 24),
-                  Text('Developer:', style: AppTheme.text3),
-                  Text('Adithya Firmansyah Putra', style: AppTheme.text3),
-                  Text('@adithya_firmansyahputra', style: AppTheme.text3.green),
+                  _developerText(),
                   SizedBox(height: 24),
                   CustomButton(
                     text: 'Keluar',
@@ -159,6 +158,23 @@ class _ProfilePageState extends State<ProfilePage> {
           height: 0.8,
         ),
       ],
+    );
+  }
+
+  Widget _developerText() {
+    return GestureDetector(
+      onTap: () async {
+        await canLaunch(Strings.instagram) ? await launch(Strings.instagram) : throw 'Could not launch ${Strings.instagram}';
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('Developer:', style: AppTheme.text3),
+          Text('Adithya Firmansyah Putra', style: AppTheme.text3),
+          Text('@adithya_firmansyahputra', style: AppTheme.text3.green),
+        ],
+      ),
     );
   }
 

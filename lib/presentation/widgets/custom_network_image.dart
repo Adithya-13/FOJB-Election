@@ -13,7 +13,7 @@ class CustomNetworkImage extends StatelessWidget {
   const CustomNetworkImage({
     Key? key,
     required this.imgUrl,
-    required this.borderRadius,
+    this.borderRadius: 0,
     this.width,
     this.height,
     this.fit: BoxFit.cover,

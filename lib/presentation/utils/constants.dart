@@ -1,5 +1,5 @@
 class Strings {
-
+  static const String instagram = 'https://www.instagram.com/adithya_firmansyahputra/';
 }
 
 class Resources {
