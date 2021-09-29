@@ -270,27 +270,21 @@ class _DetailPageState extends State<DetailPage> {
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: candidate.mission
-                .map((e) => Container(
-                      margin: EdgeInsets.only(bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.black,
+            children: candidate.mission.asMap()
+                .map((index, value) => MapEntry(index, Container(
+                        margin: EdgeInsets.only(bottom: 4),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text((index + 1).toString() + '.', style: AppTheme.text2),
+                            SizedBox(width: Helper.normalPadding),
+                            Expanded(
+                              child: Text(value, style: AppTheme.text2),
                             ),
-                            height: 8,
-                            width: 8,
-                          ),
-                          SizedBox(width: Helper.normalPadding),
-                          Expanded(
-                            child: Text(e, style: AppTheme.text2),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ))
-                .toList(),
+                )).values.toList(),
           ),
         ],
       ),

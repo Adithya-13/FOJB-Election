@@ -15,6 +15,7 @@ class CandidateItemEntity extends BaseEntity {
   final List<String> mission;
   final String urlVideo;
   final String description;
+  final String img;
 
   CandidateItemEntity({
     String? name,
@@ -24,11 +25,13 @@ class CandidateItemEntity extends BaseEntity {
     List<String>? mission,
     String? urlVideo,
     String? description,
+    String? img,
   })  : name = name ?? '',
         origin = origin ?? '',
         school = school ?? '',
         vision = vision ?? '',
         mission = mission ?? List<String>.empty(),
         description = description ?? '',
-        urlVideo = urlVideo ?? '';
+        urlVideo = urlVideo ?? '',
+        img = img ?? '';
 }

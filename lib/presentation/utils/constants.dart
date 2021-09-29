@@ -30,8 +30,8 @@ class Dummy {
   static const List<String> shortName = [
     'Fauzan',
     'Razinah',
-    'Anwar',
-    'Bintang',
+    'Azzikri',
+    'Mesa',
     'Nola',
     'Farah',
   ];
