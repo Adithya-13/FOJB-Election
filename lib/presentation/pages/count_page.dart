@@ -5,6 +5,7 @@ import 'package:fojb_election/data/entities/entities.dart';
 import 'package:fojb_election/logic/blocs/blocs.dart';
 import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CountPage extends StatefulWidget {
   const CountPage({Key? key}) : super(key: key);
@@ -15,11 +16,30 @@ class CountPage extends StatefulWidget {
 
 class _CountPageState extends State<CountPage> {
 
+  late RefreshController _refreshController;
+
   @override
   void initState() {
+    _refreshController = RefreshController();
+    _refresh();
+    super.initState();
+  }
+
+  void _refresh() {
     context.read<CandidateBloc>().add(GetCandidates());
     context.read<CountBloc>().add(GetCounts());
-    super.initState();
+  }
+
+  void _stopRefresh() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _refreshController.refreshCompleted();
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,60 +50,67 @@ class _CountPageState extends State<CountPage> {
         automaticallyImplyLeading: false,
         title: Text('Quick Count', style: AppTheme.headline3.white),
       ),
-      body: BlocBuilder<CandidateBloc, CandidateState>(
-        buildWhen: (previous, current) => current is CandidateSuccess,
-        builder: (context, candidateState) {
-          return BlocBuilder<CountBloc, CountState>(
-            builder: (context, countState) {
-              if (candidateState is CandidateLoading || countState is CountLoading) {
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppTheme.darkBlue,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
-                      strokeWidth: 6,
-                    ),
-                  ),
-                );
-              } else if (candidateState is CandidateEmpty || countState is CountEmpty) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: Text('Candidate Empty', style: AppTheme.headline3),
-                  ),
-                );
-              } else if (candidateState is CandidateFailure || countState is CountFailure) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: Text('Candidate Failure', style: AppTheme.headline3),
-                  ),
-                );
-              } else if (candidateState is CandidateSuccess &&
-                  countState is CountSuccess) {
-                return SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    padding: EdgeInsets.all(Helper.normalPadding),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(height: Helper.bigPadding),
-                        _chartBar(context, countState.entity),
-                        SizedBox(height: Helper.bigPadding),
-                        _candidateList(
-                            context, countState.entity, candidateState.entity),
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return Container();
+      body: SmartRefresher(
+        controller: _refreshController,
+        onRefresh: _refresh,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: BlocBuilder<CandidateBloc, CandidateState>(
+            buildWhen: (previous, current) => current is CandidateSuccess,
+            builder: (context, candidateState) {
+              return BlocBuilder<CountBloc, CountState>(
+                builder: (context, countState) {
+                  if (candidateState is CandidateLoading || countState is CountLoading) {
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.darkBlue,
+                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                          strokeWidth: 6,
+                        ),
+                      ),
+                    );
+                  } else if (candidateState is CandidateEmpty || countState is CountEmpty) {
+                    _stopRefresh();
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: Text('Candidate Empty', style: AppTheme.headline3),
+                      ),
+                    );
+                  } else if (candidateState is CandidateFailure || countState is CountFailure) {
+                    _stopRefresh();
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: Text('Candidate Failure', style: AppTheme.headline3),
+                      ),
+                    );
+                  } else if (candidateState is CandidateSuccess &&
+                      countState is CountSuccess) {
+                    _stopRefresh();
+                    return Container(
+                      padding: EdgeInsets.all(Helper.normalPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(height: Helper.bigPadding),
+                          _chartBar(context, countState.entity),
+                          SizedBox(height: Helper.bigPadding),
+                          _candidateList(
+                              context, countState.entity, candidateState.entity),
+                        ],
+                      ),
+                    );
+                  }
+                  return Container();
+                },
+              );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }
