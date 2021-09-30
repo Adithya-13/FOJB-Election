@@ -87,6 +87,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FOJB Election',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
         fontFamily: !Platform.isIOS ? 'Gotham' : null,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 
 class BottomNavBar extends StatelessWidget {
