@@ -25,7 +25,7 @@ extension StringExtension on String {
   String get capitalizeFirstTofEach => this.split(" ").map((str) => str.capitalize).join(" ");
   bool get isNumeric {
     // Null or empty string is not a number
-    if (this == null || this.isEmpty) {
+    if (this.isEmpty) {
       return false;
     }
 

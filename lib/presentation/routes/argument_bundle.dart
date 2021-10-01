@@ -6,7 +6,7 @@ class ArgumentBundle {
 
   ArgumentBundle({
     int? id,
-    dynamic? extras,
+    dynamic extras,
     String? identifier,
   })  : id = id ?? 0,
         extras = extras ?? null,

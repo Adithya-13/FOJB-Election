@@ -17,7 +17,6 @@ class CountPage extends StatefulWidget {
 
 class _CountPageState extends State<CountPage> {
   late RefreshController _refreshController;
-  int touchedIndex = -1;
 
   @override
   void initState() {
@@ -123,85 +122,78 @@ class _CountPageState extends State<CountPage> {
   }
 
   Widget _chartBar(BuildContext context, CountEntity counts) {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Card(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              height: 18,
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                      pieTouchData:
-                      PieTouchData(touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        setState(() {
-                          if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            touchedIndex = -1;
-                            return;
-                          }
-                          touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                        });
-                      }),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections()),
-                ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+       color: AppTheme.white,
+        boxShadow: Helper.getShadow(),
+      ),
+      padding: EdgeInsets.all(Helper.normalPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: PieChart(
+                PieChartData(
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    sections: showingSections(counts)),
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Indicator(
-                  color: Color(0xff0293ee),
-                  text: 'First',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xfff8b250),
-                  text: 'Second',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xff845bef),
-                  text: 'Third',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xff13d38e),
-                  text: 'Fourth',
-                  isSquare: true,
-                ),
-                SizedBox(
-                  height: 18,
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 28,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(width: 32),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Indicator(
+                color: Dummy.colors[0],
+                text: Dummy.shortName[0],
+              ),
+              SizedBox(
+                height: 4
+              ),
+              Indicator(
+                color: Dummy.colors[1],
+                text: Dummy.shortName[1],
+              ),
+              SizedBox(
+                height: 4
+              ),
+              Indicator(
+                color: Dummy.colors[2],
+                text: Dummy.shortName[2],
+              ),
+              SizedBox(
+                height: 4
+              ),
+              Indicator(
+                color: Dummy.colors[3],
+                text: Dummy.shortName[3],
+              ),
+              SizedBox(
+                height: 4),
+              Indicator(
+                color: Dummy.colors[4],
+                text: Dummy.shortName[4],
+              ),
+              SizedBox(
+                height: 4),
+              Indicator(
+                color: Dummy.colors[5],
+                text: Dummy.shortName[5],
+              ),
+            ],
+          ),
+          const SizedBox(
+            width: 28,
+          ),
+        ],
       ),
     );
     // return AspectRatio(
@@ -276,12 +268,12 @@ class _CountPageState extends State<CountPage> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: AppTheme.green,
+                          color: Dummy.colors[index],
                         ),
                         padding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         child: Center(
-                          child: Text('Count: $countCandidate',
+                          child: Text('Count: $countCandidate%',
                               style: AppTheme.text1.bold.white),
                         ),
                       ),
@@ -295,47 +287,57 @@ class _CountPageState extends State<CountPage> {
       },
     );
   }
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
+  List<PieChartSectionData> showingSections(CountEntity counts) {
+    return List.generate(6, (i) {
+      final radius = 50.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: const Color(0xff0293ee),
-            value: 40,
-            title: '40%',
+            color: Dummy.colors[0],
+            value: counts.countCandidates[0].toDouble(),
+            title: '${counts.countCandidates[0]}%',
             radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+            titleStyle: AppTheme.text1.white,
           );
         case 1:
           return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
+            color: Dummy.colors[1],
+            value: counts.countCandidates[1].toDouble(),
+            title: '${counts.countCandidates[1]}%',
             radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+            titleStyle: AppTheme.text1.white,
           );
         case 2:
           return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 15,
-            title: '15%',
+            color: Dummy.colors[2],
+            value: counts.countCandidates[2].toDouble(),
+            title: '${counts.countCandidates[2]}%',
             radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+            titleStyle: AppTheme.text1.white,
           );
         case 3:
           return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
+            color: Dummy.colors[3],
+            value: counts.countCandidates[3].toDouble(),
+            title: '${counts.countCandidates[3]}%',
             radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+            titleStyle: AppTheme.text1.white,
+          );
+        case 4:
+          return PieChartSectionData(
+            color: Dummy.colors[4],
+            value: counts.countCandidates[4].toDouble(),
+            title: '${counts.countCandidates[4]}%',
+            radius: radius,
+            titleStyle: AppTheme.text1.white,
+          );
+        case 5:
+          return PieChartSectionData(
+            color: Dummy.colors[5],
+            value: counts.countCandidates[5].toDouble(),
+            title: '${counts.countCandidates[5]}%',
+            radius: radius,
+            titleStyle: AppTheme.text1.white,
           );
         default:
           throw Error();
@@ -543,11 +545,11 @@ class Indicator extends StatelessWidget {
   final double size;
   final Color textColor;
 
-  const Indicator({
+  Indicator({
     Key? key,
     required this.color,
     required this.text,
-    required this.isSquare,
+    this.isSquare: false,
     this.size = 16,
     this.textColor = const Color(0xff505050),
   }) : super(key: key);
@@ -565,11 +567,11 @@ class Indicator extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: 4,
+          width: 8,
         ),
         Text(
           text,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
+          style: AppTheme.text1.bold,
         )
       ],
     );

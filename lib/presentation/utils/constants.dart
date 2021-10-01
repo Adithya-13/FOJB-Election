@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Strings {
   static const String instagram = 'https://www.instagram.com/adithya_firmansyahputra/';
 }
@@ -40,5 +42,14 @@ class Dummy {
     'Mesa',
     'Nola',
     'Farah',
+  ];
+
+  static const List<Color> colors = [
+      const Color(0xff254652),
+      const Color(0xff439d8f),
+      const Color(0xffeac469),
+      const Color(0xfff4a261),
+      const Color(0xffe76f51),
+      const Color(0xffe34369),
   ];
 }
