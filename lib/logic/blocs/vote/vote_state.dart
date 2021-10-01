@@ -19,8 +19,4 @@ class VoteFailure extends VoteState {
   VoteFailure({required this.message});
 }
 
-class VoteCheck extends VoteState {
-  final bool isUserCanVote;
-
-  VoteCheck({required this.isUserCanVote});
-}
+class VoteCheck extends VoteState {}

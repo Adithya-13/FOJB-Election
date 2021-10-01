@@ -72,18 +72,15 @@ class _DetailPageState extends State<DetailPage> {
         child: BlocListener<DetailVote, VoteState>(
           listener: (blocContext, state) {
             if (state is VoteCheck) {
-              if (state.isUserCanVote) {
-                _youtubeController.pause();
-                Navigator.pushNamed(context, PagePath.vote,
-                    arguments: ArgumentBundle(id: index));
-              } else {
-                Helper.snackBar(
-                  context,
-                  message:
-                      'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                  isError: true,
-                );
-              }
+              _youtubeController.pause();
+              Navigator.pushNamed(context, PagePath.vote,
+                  arguments: ArgumentBundle(id: index));
+            } else if (state is VoteFailure) {
+              Helper.snackBar(
+                context,
+                message: state.message,
+                isError: true,
+              );
             }
           },
           child: BlocBuilder<CandidateBloc, CandidateState>(
@@ -308,7 +305,8 @@ class _DetailPageState extends State<DetailPage> {
                                 style: AppTheme.text2),
                             SizedBox(width: Helper.normalPadding),
                             Expanded(
-                              child: Text(value, style: AppTheme.text2.increaseHeight),
+                              child: Text(value,
+                                  style: AppTheme.text2.increaseHeight),
                             ),
                           ],
                         ),

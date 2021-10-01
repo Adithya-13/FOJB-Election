@@ -40,16 +40,13 @@ class _HomePageState extends State<HomePage> {
       body: BlocListener<HomeVote, VoteState>(
         listener: (context, state) {
           if (state is VoteCheck) {
-            if (state.isUserCanVote) {
                 Navigator.pushNamed(context, PagePath.vote);
-            } else {
-              Helper.snackBar(
-                context,
-                message:
-                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                isError: true,
-              );
-            }
+          } else if (state is VoteFailure){
+            Helper.snackBar(
+              context,
+              message: state.message,
+              isError: true,
+            );
           }
         },
         child: SingleChildScrollView(

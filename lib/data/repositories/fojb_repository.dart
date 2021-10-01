@@ -40,6 +40,10 @@ class FojbRepository {
     return _voteDataSource.checkUserVote(id: id);
   }
 
+  Future<bool> checkVoteTime() async {
+    return _voteDataSource.checkVoteTime();
+  }
+
   Future<CandidateEntity> getCandidates() async {
     final entity = StaticData.getCandidates();
     return entity;

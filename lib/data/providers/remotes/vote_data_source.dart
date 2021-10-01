@@ -11,6 +11,37 @@ class VoteDataSource {
     required DatabaseReference ref,
   }) : _ref = ref;
 
+  Future<bool> checkVoteTime() async {
+    try{
+      final bool isCanVote = await _ref.child('time').once().then((dataSnapshot) {
+        if (dataSnapshot.exists) {
+          Map<dynamic, dynamic> value = dataSnapshot.value;
+          final start = value['start'];
+          final end = value['end'];
+          final dateStart = DateTime.fromMillisecondsSinceEpoch(start).toLocal();
+          final dateEnd = DateTime.fromMillisecondsSinceEpoch(end).toLocal();
+          final DateTime now = DateTime.now();
+          return now.isBefore(dateEnd) && now.isAfter(dateStart);
+        }
+        return false;
+      }).catchError((error) {
+        throw Failure(error);
+      }).timeout(
+        Duration(seconds: 15),
+        onTimeout: () {
+          throw Failure('time out connection');
+        },
+      );
+      return isCanVote;
+    } on SocketException {
+      throw Failure('No Internet connection!');
+    } on HttpException {
+      throw Failure("Couldn't find the User");
+    } on FormatException {
+      throw Failure("Bad response format");
+    }
+  }
+
   Future<bool> checkUserVote({required String id}) async {
     try {
       User? user = await _ref

@@ -11,6 +11,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 
 class VotePage extends StatefulWidget {
   final ArgumentBundle? bundle;
+
   const VotePage({Key? key, required this.bundle}) : super(key: key);
 
   @override
@@ -73,19 +74,9 @@ class _VotePageState extends State<VotePage> {
               } else if (state is VoteFailure) {
                 context.loaderOverlay.hide();
                 Helper.snackBar(context, message: state.message);
-              } else if (state is VoteCheck) {
-                context.loaderOverlay.hide();
-                if (!state.isUserCanVote) {
-                  Helper.snackBar(
-                    context,
-                    message:
-                    'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!',
-                    isError: true,
-                  );
-                }
               }
             },
-            child:           BlocBuilder<CandidateBloc, CandidateState>(
+            child: BlocBuilder<CandidateBloc, CandidateState>(
               buildWhen: (previous, current) => current is CandidateSuccess,
               builder: (context, state) {
                 if (state is CandidateLoading) {
@@ -94,7 +85,8 @@ class _VotePageState extends State<VotePage> {
                     child: Center(
                       child: CircularProgressIndicator(
                         color: AppTheme.darkBlue,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppTheme.blue),
                         strokeWidth: 6,
                       ),
                     ),
@@ -110,12 +102,13 @@ class _VotePageState extends State<VotePage> {
                   return Container(
                     height: MediaQuery.of(context).size.height,
                     child: Center(
-                      child: Text('Candidate Failure', style: AppTheme.headline3),
+                      child:
+                          Text('Candidate Failure', style: AppTheme.headline3),
                     ),
                   );
-                } else if (state is CandidateSuccess){
+                } else if (state is CandidateSuccess) {
                   final candidateEntity = state.entity;
-                  return  SingleChildScrollView(
+                  return SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Container(
                       padding: EdgeInsets.all(Helper.normalPadding),
@@ -139,7 +132,8 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _gridListCandidate(BuildContext context, CandidateEntity candidateEntity) {
+  Widget _gridListCandidate(
+      BuildContext context, CandidateEntity candidateEntity) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -170,8 +164,7 @@ class _VotePageState extends State<VotePage> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: vote == index ? AppTheme.lightGreen : AppTheme
-                        .white,
+                    color: vote == index ? AppTheme.lightGreen : AppTheme.white,
                     boxShadow: vote == index ? null : Helper.getShadow(),
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -227,7 +220,8 @@ class _VotePageState extends State<VotePage> {
               }
               showDialog(
                 context: context,
-                builder: (context) => _confirmationDialog(context, candidateEntity.candidates[vote!]),
+                builder: (context) => _confirmationDialog(
+                    context, candidateEntity.candidates[vote!]),
               );
             },
             isEnable: vote != null,
@@ -238,7 +232,8 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _confirmationDialog(BuildContext context, CandidateItemEntity candidate) {
+  Widget _confirmationDialog(
+      BuildContext context, CandidateItemEntity candidate) {
     return CustomDialog(
       title: 'Konfirmasi',
       content: Text(
@@ -253,12 +248,12 @@ class _VotePageState extends State<VotePage> {
           }
           Navigator.pop(context);
           context.read<VotingVote>().add(
-            PostVote(
-              position: vote! + 1,
-              id: id,
-              name: name,
-            ),
-          );
+                PostVote(
+                  position: vote! + 1,
+                  id: id,
+                  name: name,
+                ),
+              );
         },
         text: 'Yap, saya yakin',
       ),
