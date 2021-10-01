@@ -24,8 +24,6 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, Vot
       try{
         final bool isUserCanVote = await _fojbRepository.checkUserVote(id: event.id);
         final bool isCanVoteTime = await _fojbRepository.checkVoteTime();
-        print('isUserCanVote $isUserCanVote');
-        print('isCanVoteTime $isCanVoteTime');
         if(isCanVoteTime){
           if(isUserCanVote){
             emit(VoteCheck());
@@ -36,7 +34,6 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, Vot
           emit(VoteFailure(message: 'Vote telah ditutup!'));
         }
       } on Failure catch(e, stacktrace) {
-        print(stacktrace);
         emit(VoteFailure(
             message: 'unable to Vote: ${e.message}'));
       }
@@ -56,7 +53,6 @@ class VoteBloc extends Bloc<VoteEvent, VoteState> with HomeVote, DetailVote, Vot
           emit(VoteFailure(message: 'Kamu telah vote, kamu tidak bisa vote lagi, suara kamu telah terdaftar, maaf ya!'));
         }
       } on Failure catch (e, stacktrace) {
-        print(stacktrace);
         emit(VoteFailure(
             message: 'unable to Vote: ${e.message}'));
       }

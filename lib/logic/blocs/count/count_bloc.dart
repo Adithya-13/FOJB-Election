@@ -20,7 +20,6 @@ class CountBloc extends Bloc<CountEvent, CountState> {
         final entity = await _fojbRepository.getCountAll();
         emit(CountSuccess(entity: entity));
       } on Failure catch (e, stacktrace){
-        print(stacktrace);
         emit(CountFailure(message: 'unable to get counts: ${e.message}'));
       }
     });

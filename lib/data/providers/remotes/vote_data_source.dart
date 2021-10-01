@@ -51,13 +51,10 @@ class VoteDataSource {
           .equalTo(id)
           .once()
           .then<User?>((DataSnapshot dataSnapshot) {
-        print('isUserCanVote: ' + dataSnapshot.value.toString());
         if (dataSnapshot.exists) {
           Map<dynamic, dynamic> values = dataSnapshot.value;
           User? user;
           values.forEach((key, values) {
-            print(values['id']);
-            print(values['name']);
             user = User.fromJson(values);
           });
           return user ?? null;

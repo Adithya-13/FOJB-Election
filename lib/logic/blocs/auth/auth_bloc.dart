@@ -49,7 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthFailure(message: 'No Telp atau Password salah');
       }
     } on Failure catch (e, stacktrace) {
-      print(stacktrace);
       yield AuthFailure(
         message: 'unable to login : ${e.message}',
       );
@@ -67,7 +66,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _getStorage.remove(Keys.isLoggedIn);
       yield LogoutSuccess();
     } on Failure catch (e, stacktrace) {
-      print(stacktrace);
       yield AuthFailure(
         message: 'unable to logout : ${e.message}',
       );

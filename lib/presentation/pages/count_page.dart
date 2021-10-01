@@ -125,7 +125,7 @@ class _CountPageState extends State<CountPage> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-       color: AppTheme.white,
+        color: AppTheme.white,
         boxShadow: Helper.getShadow(),
       ),
       padding: EdgeInsets.all(Helper.normalPadding),
@@ -150,45 +150,11 @@ class _CountPageState extends State<CountPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Indicator(
-                color: Dummy.colors[0],
-                text: Dummy.shortName[0],
-              ),
-              SizedBox(
-                height: 4
-              ),
-              Indicator(
-                color: Dummy.colors[1],
-                text: Dummy.shortName[1],
-              ),
-              SizedBox(
-                height: 4
-              ),
-              Indicator(
-                color: Dummy.colors[2],
-                text: Dummy.shortName[2],
-              ),
-              SizedBox(
-                height: 4
-              ),
-              Indicator(
-                color: Dummy.colors[3],
-                text: Dummy.shortName[3],
-              ),
-              SizedBox(
-                height: 4),
-              Indicator(
-                color: Dummy.colors[4],
-                text: Dummy.shortName[4],
-              ),
-              SizedBox(
-                height: 4),
-              Indicator(
-                color: Dummy.colors[5],
-                text: Dummy.shortName[5],
-              ),
-            ],
+            children: List.generate(
+                6,
+                (index) => Indicator(
+                    color: Dummy.colors[index],
+                    text: Dummy.shortName[index])).toList(),
           ),
           const SizedBox(
             width: 28,
@@ -196,23 +162,6 @@ class _CountPageState extends State<CountPage> {
         ],
       ),
     );
-    // return AspectRatio(
-    //   aspectRatio: 1.7,
-    //   child: Container(
-    //     decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular(20),
-    //       color: AppTheme.darkGreen,
-    //       gradient: LinearGradient(
-    //         colors: [Colors.green.shade400, AppTheme.darkGreen],
-    //         begin: Alignment.topLeft,
-    //         end: Alignment.bottomRight,
-    //       ),
-    //       boxShadow: Helper.getBigShadow(),
-    //     ),
-    //     padding: EdgeInsets.all(Helper.normalPadding),
-    //     child: CountChart(countEntity: counts),
-    //   ),
-    // );
   }
 
   Widget _candidateList(BuildContext context, CountEntity countEntity,
@@ -287,6 +236,7 @@ class _CountPageState extends State<CountPage> {
       },
     );
   }
+
   List<PieChartSectionData> showingSections(CountEntity counts) {
     return List.generate(6, (i) {
       final radius = 50.0;
@@ -346,198 +296,6 @@ class _CountPageState extends State<CountPage> {
   }
 }
 
-class CountChart extends StatelessWidget {
-  final CountEntity countEntity;
-
-  const CountChart({Key? key, required this.countEntity}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
-        borderData: borderData,
-        barGroups: barGroups(countEntity),
-        gridData: FlGridData(show: false),
-        alignment: BarChartAlignment.spaceAround,
-        maxY: countEntity.total.toDouble() + (countEntity.total.toDouble() / 4),
-      ),
-      swapAnimationDuration: Duration(milliseconds: 300),
-      swapAnimationCurve: Curves.easeInOutCubic,
-    );
-  }
-
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
-        touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.transparent,
-          tooltipPadding: const EdgeInsets.all(0),
-          tooltipMargin: 8,
-          getTooltipItem: (
-            BarChartGroupData group,
-            int groupIndex,
-            BarChartRodData rod,
-            int rodIndex,
-          ) {
-            return BarTooltipItem(
-              rod.y.round().toString(),
-              TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
-        ),
-      );
-
-  FlTitlesData get titlesData => FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (context, value) => AppTheme.text2.whiteOpacity,
-          margin: 30,
-          getTitles: (double value) {
-            switch (value.toInt()) {
-              case 0:
-                return '1';
-              case 1:
-                return '2';
-              case 2:
-                return '3';
-              case 3:
-                return '4';
-              case 4:
-                return '5';
-              case 5:
-                return '6';
-              default:
-                return '';
-            }
-          },
-        ),
-        leftTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        rightTitles: SideTitles(showTitles: false),
-      );
-
-  FlBorderData get borderData => FlBorderData(
-        show: false,
-      );
-
-  List<BarChartGroupData> barGroups(CountEntity counts) => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[0].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[1].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[2].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barsSpace: 10,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[3].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[4].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              y: counts.countCandidates[5].toDouble(),
-              colors: [
-                AppTheme.darkBlue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-                AppTheme.blue,
-              ],
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
-}
-
 class Indicator extends StatelessWidget {
   final Color color;
   final String text;
@@ -556,24 +314,27 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+              color: color,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Text(
-          text,
-          style: AppTheme.text1.bold,
-        )
-      ],
+          const SizedBox(
+            width: 8,
+          ),
+          Text(
+            text,
+            style: AppTheme.text1.bold,
+          )
+        ],
+      ),
     );
   }
 }

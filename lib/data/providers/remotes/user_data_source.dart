@@ -19,10 +19,7 @@ class UserDataSource {
           .equalTo(id)
           .once()
           .then<User>((DataSnapshot dataSnapshot) {
-        print(dataSnapshot.value);
         if (dataSnapshot.value is List<Object?>) {
-          print('this is list');
-          print(dataSnapshot.value);
           if (dataSnapshot.exists) {
             return User.fromJson(dataSnapshot.value[0]);
           }

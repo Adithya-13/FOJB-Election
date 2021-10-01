@@ -24,7 +24,6 @@ class CandidateBloc extends Bloc<CandidateEvent, CandidateState> {
         }
         emit(CandidateSuccess(entity: entity));
       } on Failure catch (e, stacktrace) {
-        print(stacktrace);
         emit(CandidateFailure(
             message: 'unable to get Candidates : ${e.message}'));
       }
@@ -37,7 +36,6 @@ class CandidateBloc extends Bloc<CandidateEvent, CandidateState> {
             await _fojbRepository.getCandidateByIndex(event.id);
         emit(CandidateByIndexSuccess(entity: entity));
       } on Failure catch (e, stacktrace) {
-        print(stacktrace);
         emit(CandidateFailure(
             message: 'unable to get Candidate by Index : ${e.message}'));
       }
