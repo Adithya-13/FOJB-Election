@@ -6,6 +6,7 @@ import 'package:fojb_election/presentation/routes/routes.dart';
 import 'package:fojb_election/presentation/utils/utils.dart';
 import 'package:fojb_election/presentation/widgets/widgets.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -74,10 +75,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginContent(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _fojbLogo(context),
         _loginTextField(context),
+        _developerText(),
       ],
     );
   }
@@ -172,6 +175,24 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+
+  Widget _developerText() {
+    return GestureDetector(
+      onTap: () async {
+        await canLaunch(Strings.instagram) ? await launch(Strings.instagram) : throw 'Could not launch ${Strings.instagram}';
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('Developer:', style: AppTheme.text3.white),
+          Text('Adithya Firmansyah Putra', style: AppTheme.text3.white),
+          Text('@adithya_firmansyahputra', style: AppTheme.text3.white),
+        ],
       ),
     );
   }

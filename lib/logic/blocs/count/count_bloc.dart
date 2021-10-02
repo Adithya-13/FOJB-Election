@@ -18,7 +18,11 @@ class CountBloc extends Bloc<CountEvent, CountState> {
       emit(CountLoading());
       try{
         final entity = await _fojbRepository.getCountAll();
-        emit(CountSuccess(entity: entity));
+        if(entity.total == 0){
+          emit(CountEmpty());
+        } else {
+          emit(CountSuccess(entity: entity));
+        }
       } on Failure catch (e, stacktrace){
         emit(CountFailure(message: 'unable to get counts: ${e.message}'));
       }

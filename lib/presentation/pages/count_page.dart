@@ -53,50 +53,41 @@ class _CountPageState extends State<CountPage> {
       body: SmartRefresher(
         controller: _refreshController,
         onRefresh: _refresh,
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: BlocBuilder<CandidateBloc, CandidateState>(
-            buildWhen: (previous, current) => current is CandidateSuccess,
-            builder: (context, candidateState) {
-              return BlocBuilder<CountBloc, CountState>(
-                builder: (context, countState) {
-                  if (candidateState is CandidateLoading ||
-                      countState is CountLoading) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: AppTheme.darkBlue,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(AppTheme.blue),
-                          strokeWidth: 6,
-                        ),
-                      ),
-                    );
-                  } else if (candidateState is CandidateEmpty ||
-                      countState is CountEmpty) {
-                    _stopRefresh();
-                    return Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                        child:
-                            Text('Candidate Empty', style: AppTheme.headline3),
-                      ),
-                    );
-                  } else if (candidateState is CandidateFailure ||
-                      countState is CountFailure) {
-                    _stopRefresh();
-                    return Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                        child: Text('Candidate Failure',
-                            style: AppTheme.headline3),
-                      ),
-                    );
-                  } else if (candidateState is CandidateSuccess &&
-                      countState is CountSuccess) {
-                    _stopRefresh();
-                    return Container(
+        child: BlocBuilder<CandidateBloc, CandidateState>(
+          buildWhen: (previous, current) => current is CandidateSuccess,
+          builder: (context, candidateState) {
+            return BlocBuilder<CountBloc, CountState>(
+              builder: (context, countState) {
+                if (candidateState is CandidateLoading ||
+                    countState is CountLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppTheme.darkBlue,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                      strokeWidth: 6,
+                    ),
+                  );
+                } else if (candidateState is CandidateEmpty ||
+                    countState is CountEmpty) {
+                  _stopRefresh();
+                  return Center(
+                    child:
+                        Text('Count Empty', style: AppTheme.headline3),
+                  );
+                } else if (candidateState is CandidateFailure ||
+                    countState is CountFailure) {
+                  _stopRefresh();
+                  return Center(
+                    child: Text('Count Failure',
+                        style: AppTheme.headline3),
+                  );
+                } else if (candidateState is CandidateSuccess &&
+                    countState is CountSuccess) {
+                  _stopRefresh();
+                  return SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Container(
                       padding: EdgeInsets.all(Helper.normalPadding),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -109,13 +100,13 @@ class _CountPageState extends State<CountPage> {
                               candidateState.entity),
                         ],
                       ),
-                    );
-                  }
-                  return Container();
-                },
-              );
-            },
-          ),
+                    ),
+                  );
+                }
+                return Container();
+              },
+            );
+          },
         ),
       ),
     );

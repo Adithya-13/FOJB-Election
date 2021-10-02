@@ -55,12 +55,12 @@ class FojbRepository {
 
   Future<CountEntity> getCountAll() async {
     final total = (await _countDataSource.getTotal()).toDouble();
-    final first = (((await _countDataSource.getFirstCandidate()).toDouble() / total) * 100).toInt();
-    final second = (((await _countDataSource.getSecondCandidate()).toDouble() / total) * 100).toInt();
-    final third = (((await _countDataSource.getThirdCandidate()).toDouble() / total) * 100).toInt();
-    final fourth = (((await _countDataSource.getFourthCandidate()).toDouble() / total * 100).toInt());
-    final fifth = (((await _countDataSource.getFifthCandidate()).toDouble() / total * 100).toInt());
-    final sixth = (((await _countDataSource.getSixthCandidate()).toDouble() / total * 100).toInt());
+    final first = total != 0 ? (((await _countDataSource.getFirstCandidate()).toDouble() / total) * 100).toInt() : 0;
+    final second = total != 0 ? (((await _countDataSource.getSecondCandidate()).toDouble() / total) * 100).toInt() : 0;
+    final third = total != 0 ? (((await _countDataSource.getThirdCandidate()).toDouble() / total) * 100).toInt() : 0;
+    final fourth = total != 0 ? (((await _countDataSource.getFourthCandidate()).toDouble() / total * 100).toInt()) : 0;
+    final fifth = total != 0 ? (((await _countDataSource.getFifthCandidate()).toDouble() / total * 100).toInt()) : 0;
+    final sixth = total != 0 ? (((await _countDataSource.getSixthCandidate()).toDouble() / total * 100).toInt()) : 0;
 
     return CountEntity(
         total: total.toInt(),
