@@ -63,8 +63,7 @@ class _CountPageState extends State<CountPage> {
                   return Center(
                     child: CircularProgressIndicator(
                       color: AppTheme.darkBlue,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(AppTheme.blue),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.blue),
                       strokeWidth: 6,
                     ),
                   );
@@ -72,15 +71,13 @@ class _CountPageState extends State<CountPage> {
                     countState is CountEmpty) {
                   _stopRefresh();
                   return Center(
-                    child:
-                        Text('Count Empty', style: AppTheme.headline3),
+                    child: Text('Count Empty', style: AppTheme.headline3),
                   );
                 } else if (candidateState is CandidateFailure ||
                     countState is CountFailure) {
                   _stopRefresh();
                   return Center(
-                    child: Text('Count Failure',
-                        style: AppTheme.headline3),
+                    child: Text('Count Failure', style: AppTheme.headline3),
                   );
                 } else if (candidateState is CandidateSuccess &&
                     countState is CountSuccess) {
@@ -165,7 +162,11 @@ class _CountPageState extends State<CountPage> {
         final candidate = candidateEntity.candidates[index];
         final countCandidate = countEntity.countCandidates[index];
         return GestureDetector(
-          onTap: () => Navigator.pushNamed(context, PagePath.detail),
+          onTap: () => Navigator.pushNamed(
+            context,
+            PagePath.detail,
+            arguments: ArgumentBundle(id: index),
+          ),
           child: Container(
             decoration: BoxDecoration(
               color: AppTheme.white,
