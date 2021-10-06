@@ -24,7 +24,7 @@ class StaticData {
               'Menjadikan pemimpin muda Jawa Barat memiliki sikap kerja yang baik seperti ulet, fokus, disiplin, tidak egois, bekerja keras dan berkomunikasi antar seluruh pihak dengan sopan dan baik.',
             ],
             urlVideo: 'IfE3j-i9PV8',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/fauzan.jpg?alt=media&token=63857e03-097f-427d-ab56-a6995d0db80b',
+            img: 'https://i.postimg.cc/nh7mxSYY/fauzan.jpg',
           ),
           CandidateItemEntity(
             name: 'Razinah Saleh Washingthon Azward',
@@ -44,7 +44,7 @@ class StaticData {
               'Mensosialisasikan program peduli lingkungan kepada seluruh pengurus dan anggota FOJB.',
             ],
             urlVideo: '__VbppYtYMM',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/razinah.jpg?alt=media&token=fbe7abb7-6497-4d4a-918b-6c9d48547e90',
+            img: 'https://i.postimg.cc/TP6D3jt8/razinah.jpg',
           ),
           CandidateItemEntity(
             name: 'Muhammad Azzikri Fadillah Anwar',
@@ -62,7 +62,7 @@ class StaticData {
               'Berkolaborasi dengan pihak internal maupun eksternal guna terciptanya suatu inovasi baru.',
             ],
             urlVideo: 'uvMWdREmD68',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/azzikri.jpg?alt=media&token=e4bd4d93-bfe9-4e3c-b078-196d41545026',
+            img: 'https://i.postimg.cc/zv6LZTyc/azzikri.jpg',
           ),
           CandidateItemEntity(
             name: 'Bintang Muhammad Surya Al-Farisy',
@@ -79,7 +79,7 @@ class StaticData {
               'Meningkatkan intensitas jejaring komunikasi efektif terhadap seluruh pengurus FOJB.',
             ],
             urlVideo: 'XC9eAwojlkI',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/mesa.jpg?alt=media&token=59553dce-4440-43c1-9958-f3786052566d',
+            img: 'https://i.postimg.cc/Y0h4sdCF/mesa.jpg',
           ),
           CandidateItemEntity(
             name: 'Nola Septiani Pramita',
@@ -99,7 +99,7 @@ class StaticData {
               'Melakukan improvisasi untuk meningkatkan skills yang akan menjadi sarana pengembangan berpikir kritis.',
             ],
             urlVideo: 'Xug173QyKvc',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/nola.jpg?alt=media&token=64550ae9-c315-4553-9200-2c01a5046181',
+            img: 'https://i.postimg.cc/MKgBhJRp/nola.jpg',
           ),
           CandidateItemEntity(
             name: 'Farah Fauziah Danopa',
@@ -117,7 +117,7 @@ class StaticData {
               'Menciptakan organisasi yang Harmoni berkaitan dengan “kesearahan” yaitu suatu proses bagaimana potensi potensi individu disatukan secara sinergis dalam organisasi.',
             ],
             urlVideo: 'BBO7sib-NMo',
-            img: 'https://firebasestorage.googleapis.com/v0/b/fojb-election-af8d3.appspot.com/o/farah.jpg?alt=media&token=8f72e084-0cad-4bb3-8af3-c07fd1e616dd',
+            img: 'https://i.postimg.cc/KcqBDM8L/farah.jpg',
           ),
         ],
       );
